@@ -27,7 +27,7 @@ import {
 } from '@/model/assets/water';
 
 const num = (v: unknown) => (typeof v === 'number' ? v : 0);
-const FIRE = '#ff6b6b';
+const FIRE = '#e59aaa';
 const TSE = '#7fd67f';
 
 interface Device {
@@ -82,7 +82,7 @@ export function WaterSldScreen() {
 
   return (
     <>
-      <Panel frame={diagram} index={0} icon={<Glyph id="wrench" size={20} color="#fff" />} title="Water Network" subtitle="Utility main → domestic tank → booster set → ring main · TSE → irrigation · fire water">
+      <Panel frame={diagram} index={0} icon={<Glyph id="wrench" size={20} color="#ffffff" />} title="Water Network" subtitle="Utility main → domestic tank → booster set → ring main · TSE → irrigation · fire water">
         <div className="absolute inset-x-[10px] bottom-[6px] top-0">
           <svg viewBox="0 0 1400 690" className="h-full w-full" preserveAspectRatio="xMidYMid meet">
             {/* ---- Utility main → domestic tank ---- */}
@@ -91,7 +91,7 @@ export function WaterSldScreen() {
             <Valve x={150} y={120} open={open('VC_01')} label="VC-01" {...pick('VC_01')} />
             <Wire points={[[160, 120], [300, 120]]} live color={WATER} flow={fillDom} />
             <Instrument x={230} y={160} code="FT" value={`${fmt(num(chambers.VC_01.Flow_m3h), 1)} m³/h`} {...pick('VC_01')} />
-            <line x1={230} y1={120} x2={230} y2={146} stroke="#79a4aa" strokeDasharray="2 2" />
+            <line x1={230} y1={120} x2={230} y2={146} stroke="#b09dc1" strokeDasharray="2 2" />
             <Tank x={300} y={70} w={110} h={150} level={num(tanks.TANK_DOM_01.Level_Pct) / 100} label="Domestic tank" value={`${fmt(num(tanks.TANK_DOM_01.Level_Pct))}%`} {...pick('TANK_DOM_01')} />
             <Instrument x={355} y={250} code="AT" value="Cl · pH · NTU" side="right" {...pick(QUALITY_TAG)} />
 
@@ -107,17 +107,17 @@ export function WaterSldScreen() {
                   <Wire points={[[480, y], [524, y]]} live color={WATER} flow={on} />
                   <Pump x={540} y={y} running={on} {...pick(p.def.tag)} />
                   <Wire points={[[556, y], [600, y]]} live color={WATER} flow={on} />
-                  <Label x={540} y={y - 22} anchor="middle" color={on ? '#fff' : '#79a4aa'}>
+                  <Label x={540} y={y - 22} anchor="middle" color={on ? '#ffffff' : '#b09dc1'}>
                     {p.def.label} {on ? `${fmt(num(p.values.Speed_Pct))}%` : ''}
                   </Label>
                 </g>
               );
             })}
-            <Label x={540} y={300} anchor="middle" color="#b4d3d8" weight={600}>
+            <Label x={540} y={300} anchor="middle" color="#d0c0df" weight={600}>
               BOOSTER SET
             </Label>
             <g onClick={() => setSel('BST_DOM')} style={{ cursor: 'pointer' }}>
-              <rect x={462} y={100} width={156} height={210} rx={10} fill="transparent" stroke={sel === 'BST_DOM' ? '#4fdcff' : 'rgba(255,255,255,0.12)'} strokeDasharray="4 4" />
+              <rect x={462} y={100} width={156} height={210} rx={10} fill="transparent" stroke={sel === 'BST_DOM' ? '#9d78ff' : 'rgba(255,255,255,0.12)'} strokeDasharray="4 4" />
             </g>
             <Wire points={[[600, 200], [690, 200]]} live color={WATER} flow={domFlow} />
             <Instrument x={640} y={160} code="PT" value={`${fmt(num(dom.values.Header_Pressure), 2)} bar`} side="above" {...pick('BST_DOM')} />
@@ -131,19 +131,19 @@ export function WaterSldScreen() {
             {TAPS.map((t) => (
               <g key={t.x}>
                 <Wire points={[[t.x, 90], [t.x, 56]]} live color={WATER} width={2} />
-                <Label x={t.x} y={46} anchor="middle" color="#d9f3f6">
+                <Label x={t.x} y={46} anchor="middle" color="#e4d6f5">
                   {t.label}
                 </Label>
               </g>
             ))}
-            <Label x={808} y={118} color="#b4d3d8" weight={600}>
+            <Label x={808} y={118} color="#d0c0df" weight={600}>
               RING MAIN
             </Label>
             <Valve x={1010} y={90} open={open('VC_08')} vertical label="VC-08 air" {...pick('VC_08')} />
             <Valve x={900} y={330} open={open('VC_03')} label="VC-03" {...pick('VC_03')} />
             <Valve x={1070} y={330} open={open('VC_04')} label="VC-04" {...pick('VC_04')} />
             <Valve x={1240} y={330} open={open('VC_05')} label="VC-05" {...pick('VC_05')} />
-            <Label x={1240} y={360} anchor="middle" color="#9be9ff">
+            <Label x={1240} y={360} anchor="middle" color="#9d78ff">
               shut · repair
             </Label>
             <Wire points={[[1340, 270], [1372, 270]]} live={false} />
@@ -152,7 +152,7 @@ export function WaterSldScreen() {
               VC-06 washout
             </Label>
             <Instrument x={1180} y={130} code="PT" value={`${fmt(num(chambers.VC_04.Downstream_Pressure), 2)} bar`} {...pick('VC_04')} />
-            <line x1={1180} y1={90} x2={1180} y2={116} stroke="#79a4aa" strokeDasharray="2 2" />
+            <line x1={1180} y1={90} x2={1180} y2={116} stroke="#b09dc1" strokeDasharray="2 2" />
 
             {/* ---- TSE → irrigation tank ---- */}
             <Source x={50} y={400} live label="TSE supply" value="treated effluent" color={TSE} />
@@ -207,7 +207,7 @@ export function WaterSldScreen() {
                   <Label x={x} y={624} anchor="middle" color="#ffffff" weight={600}>
                     {z.label}
                   </Label>
-                  <Label x={x} y={640} anchor="middle" color={on ? '#9be9ff' : '#6f929a'}>
+                  <Label x={x} y={640} anchor="middle" color={on ? '#9d78ff' : '#5f526d'}>
                     {on ? `${fmt(num(v.Flow_m3h), 0)} m³/h` : String(v.Next_Start)}
                   </Label>
                 </g>
@@ -229,7 +229,7 @@ export function WaterSldScreen() {
                   <Wire points={[[x, 655], [x, 648]]} live color={FIRE} flow={on} />
                   <Pump x={x} y={636} running={on} color={FIRE} {...pick(p.def.tag)} />
                   <Wire points={[[x, 624], [x, 615]]} live color={FIRE} flow={on} />
-                  <Label x={x + 20} y={654} color="#79a4aa" size={10.5}>
+                  <Label x={x + 20} y={654} color="#b09dc1" size={10.5}>
                     {p.def.label === 'Jockey' ? 'JP' : p.def.label === 'Electric' ? 'EP' : 'DP'}
                   </Label>
                 </g>
@@ -244,8 +244,8 @@ export function WaterSldScreen() {
                 { label: 'Domestic', swatch: <line x1={0} x2={18} y1={0} y2={0} stroke={WATER} strokeWidth={3} /> },
                 { label: 'TSE / irrigation', swatch: <line x1={0} x2={18} y1={0} y2={0} stroke={TSE} strokeWidth={3} /> },
                 { label: 'Fire water', swatch: <line x1={0} x2={18} y1={0} y2={0} stroke={FIRE} strokeWidth={3} /> },
-                { label: 'Flowing', swatch: <line x1={0} x2={18} y1={0} y2={0} stroke="#fff" strokeDasharray="4 4" strokeWidth={2} /> },
-                { label: 'Valve shut (abnormal)', swatch: <path d="M0 -8 L0 8 L18 -8 L18 8 Z" fill="#031a1c" stroke="#ef4444" strokeWidth={1.5} /> },
+                { label: 'Flowing', swatch: <line x1={0} x2={18} y1={0} y2={0} stroke="#ffffff" strokeDasharray="4 4" strokeWidth={2} /> },
+                { label: 'Valve shut (abnormal)', swatch: <path d="M0 -8 L0 8 L18 -8 L18 8 Z" fill="#060408" stroke="#d96b84" strokeWidth={1.5} /> },
                 { label: 'Idle', swatch: <line x1={0} x2={18} y1={0} y2={0} stroke={DEAD} strokeWidth={3} /> },
               ]}
             />
@@ -253,7 +253,7 @@ export function WaterSldScreen() {
         </div>
       </Panel>
 
-      <Panel frame={side} index={1} icon={<Glyph id="wrench" size={20} color="#fff" />} title={device.title} subtitle={`${sel} · ${device.template.name}`}>
+      <Panel frame={side} index={1} icon={<Glyph id="wrench" size={20} color="#ffffff" />} title={device.title} subtitle={`${sel} · ${device.template.name}`}>
         <div className="pf-scroll absolute inset-x-[16px] bottom-[14px] top-[2px]">
           <p className="mb-[10px] text-[13px] text-ink-3">{device.template.desc} · click any tank, pump, valve or instrument.</p>
           <GalaxyPoints tag={sel} template={device.template} values={device.values} />

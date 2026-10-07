@@ -94,9 +94,9 @@ export function EnergyMeteringScreen() {
 }
 
 const SYSTEM_SHARES = [
-  { name: 'Plumbing', color: '#4fdcff', low: 90, high: 170 },
-  { name: 'Metering', color: '#4fc3d4', low: 20, high: 40 },
-  { name: 'Electric', color: '#ef4444', low: 150, high: 260 },
+  { name: 'Plumbing', color: '#9d78ff', low: 90, high: 170 },
+  { name: 'Wastewater', color: '#b58ce3', low: 20, high: 40 },
+  { name: 'Electric', color: '#d96b84', low: 150, high: 260 },
   { name: 'Security', color: '#34d399', low: 60, high: 90 },
   { name: 'HVAC', color: '#5b7cff', low: 520, high: 980 },
   { name: 'Safety', color: '#ffffff', low: 40, high: 70 },

@@ -54,7 +54,7 @@ export const CloudSunIcon = (p: P) => (
 export const CardIcon = (p: P) => (
   <svg viewBox="0 0 20 20" fill="none" {...base(p)}>
     <rect x="2" y="2" width="16" height="16" rx="3" fill="currentColor" />
-    <path d="M5 11h2.3l1.6-3.6 2.4 6 1.6-3h2.1" stroke="#03191a" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M5 11h2.3l1.6-3.6 2.4 6 1.6-3h2.1" stroke="#060308" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 

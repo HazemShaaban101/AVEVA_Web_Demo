@@ -82,8 +82,8 @@ function Equipment({ unit }: { unit: AhuUnit }) {
           <hemisphereLight args={['#dfe6ff', '#1a1c3a', 0.9]} />
           <ambientLight intensity={0.25} />
           <directionalLight position={[6, 9, 7]} intensity={1.6} castShadow shadow-mapSize={[1024, 1024]} shadow-camera-left={-8} shadow-camera-right={8} shadow-camera-top={6} shadow-camera-bottom={-6} />
-          <directionalLight position={[-7, 4, -5]} intensity={0.5} color="#4fc3d4" />
-          <pointLight position={[1, 3, 4]} intensity={6} distance={12} color="#d9fbff" />
+          <directionalLight position={[-7, 4, -5]} intensity={0.5} color="#b58ce3" />
+          <pointLight position={[1, 3, 4]} intensity={6} distance={12} color="#e4ccff" />
           <Suspense fallback={null}>
             <group position={[-1.2, -0.9, 0]}>
               <AhuModel live={live.model} hovered={hovered} selected={selected} onHover={setHovered} onSelect={setSelected} anchorTargets={labels} />
@@ -124,13 +124,13 @@ function Equipment({ unit }: { unit: AhuUnit }) {
               else labels.current.delete(c.part);
             }}
             onClick={() => setSelected(c.part)}
-            className="pointer-events-auto absolute left-0 top-0 flex items-center gap-[8px] whitespace-nowrap rounded-[8px] bg-white px-[8px] py-[5px] font-[family-name:var(--font-plain)] text-[12px] text-[#0d3438] opacity-0 shadow-[0_8px_20px_rgba(0,0,0,0.45)] transition-[opacity] hover:ring-2 hover:ring-accent"
-            style={selected === c.part ? { boxShadow: '0 0 0 2px #4fdcff, 0 8px 20px rgba(0,0,0,0.45)' } : undefined}
+            className="pointer-events-auto absolute left-0 top-0 flex items-center gap-[8px] whitespace-nowrap rounded-[8px] bg-white px-[8px] py-[5px] font-[family-name:var(--font-plain)] text-[12px] text-[#07050a] opacity-0 shadow-[0_8px_20px_rgba(0,0,0,0.45)] transition-[opacity] hover:ring-2 hover:ring-accent"
+            style={selected === c.part ? { boxShadow: '0 0 0 2px #9d78ff, 0 8px 20px rgba(0,0,0,0.45)' } : undefined}
           >
             {c.label}
             <span
               className="min-w-[70px] rounded-[5px] border px-[6px] py-[1px] text-center font-medium"
-              style={{ borderColor: c.tone === 'bad' ? '#ef4444' : '#4fc3d4', color: c.tone === 'bad' ? '#ef4444' : c.tone === 'good' ? '#2fae4f' : '#2f8f9e' }}
+              style={{ borderColor: c.tone === 'bad' ? '#d96b84' : '#b58ce3', color: c.tone === 'bad' ? '#d96b84' : c.tone === 'good' ? '#2fae4f' : '#482a6a' }}
             >
               {c.value}
             </span>
@@ -183,7 +183,7 @@ function StatusStrip({ live, onReset }: { live: ReturnType<typeof useAhuLive>; o
     return t > acc ? t : acc;
   }, 0);
   const ago = last ? Math.max(0, Math.round((now - last) / 1000)) : null;
-  const color = live.status === 'live' ? '#4ade6b' : live.status === 'reconnecting' ? '#ffb020' : '#4fc3d4';
+  const color = live.status === 'live' ? '#7fcf9d' : live.status === 'reconnecting' ? '#e8a98c' : '#b58ce3';
   return (
     <div className="absolute bottom-[22px] left-[110px] z-10 flex items-center gap-[14px] text-[14px]">
       <span className="flex items-center gap-[8px] rounded-full border border-white/15 bg-night-900/70 px-[14px] py-[7px] backdrop-blur">

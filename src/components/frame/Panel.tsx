@@ -47,16 +47,16 @@ export function Panel({ title, subtitle, icon, action, actionPlacement = 'end', 
         {icon && (
           <span
             className={clsx('flex shrink-0 items-center justify-center rounded-[9px] border border-accent/45 text-accent-soft', narrow ? 'h-[30px] w-[30px]' : 'h-[34px] w-[34px]')}
-            style={{ background: 'rgba(79,220,255,0.1)' }}
+            style={{ background: 'rgba(157,120,255,0.1)' }}
           >
-            <span className="flex h-[20px] w-[20px] items-center justify-center [&>*]:max-h-full [&>*]:max-w-full" style={{ filter: 'drop-shadow(0 0 3px rgba(79,220,255,0.45))' }}>
+            <span className="flex h-[20px] w-[20px] items-center justify-center [&>*]:max-h-full [&>*]:max-w-full" style={{ filter: 'drop-shadow(0 0 3px rgba(157,120,255,0.45))' }}>
               {icon}
             </span>
           </span>
         )}
         <div className="min-w-0">
           <h2 className={clsx('font-medium leading-[1.2] text-white', narrow ? 'whitespace-nowrap text-[19px]' : 'truncate text-[23px]')}>{title}</h2>
-          {subtitle && <p className={clsx('mt-[3px] leading-tight text-[#79a4aa]', narrow ? 'text-[13px]' : 'text-[15px]')}>{subtitle}</p>}
+          {subtitle && <p className={clsx('mt-[3px] leading-tight text-[#b09dc1]', narrow ? 'text-[13px]' : 'text-[15px]')}>{subtitle}</p>}
         </div>
         {action && <div className={actionPlacement === 'inline' ? 'ml-[58px] pt-[2px]' : 'ml-auto pl-[16px] pt-[2px]'}>{action}</div>}
       </header>

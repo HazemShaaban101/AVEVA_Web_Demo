@@ -38,7 +38,7 @@ export function CameraTile({ cam, selected, onClick, large }: { cam: CameraSpec;
           alt=""
           draggable={false}
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: `${cam.focus[0]}% ${cam.focus[1]}%`, filter: 'grayscale(0.35) contrast(1.15) brightness(1.05) saturate(0.8)' }}
+          style={{ objectPosition: `${cam.focus[0]}% ${cam.focus[1]}%`, transformOrigin: `${cam.focus[0]}% ${cam.focus[1]}%`, filter: 'grayscale(0.35) contrast(1.15) brightness(1.05) saturate(0.8)' }}
           initial={{ scale: cam.zoom, x: 0, y: 0 }}
           animate={{ scale: cam.zoom, x: [0, cam.pan[0] * 100, 0], y: [0, cam.pan[1] * 100, 0] }}
           transition={{ duration: 38, repeat: Infinity, ease: 'easeInOut' }}
@@ -64,7 +64,7 @@ export function CameraTile({ cam, selected, onClick, large }: { cam: CameraSpec;
           <motion.span
             key={i}
             className="pointer-events-none absolute border-[1.5px] border-accent"
-            style={{ width: `${w}%`, height: `${h}%`, boxShadow: '0 0 8px rgba(79,220,255,0.6)' }}
+            style={{ width: `${w}%`, height: `${h}%`, boxShadow: '0 0 8px rgba(157,120,255,0.6)' }}
             initial={{ left: `${x}%`, top: `${y}%`, opacity: 0 }}
             animate={{ left: [`${x}%`, `${x + 6 + i * 3}%`, `${x}%`], top: [`${y}%`, `${y + 2}%`, `${y}%`], opacity: [0, 1, 1, 0] }}
             transition={{ duration: 9 + i * 3, repeat: Infinity, delay: i * 2.2, ease: 'easeInOut' }}
@@ -73,11 +73,11 @@ export function CameraTile({ cam, selected, onClick, large }: { cam: CameraSpec;
           </motion.span>
         ))}
 
-      <div className={clsx('absolute left-[10px] top-[8px] flex items-center gap-[8px] font-mono tracking-[0.5px] text-white', large ? 'text-[14px]' : 'text-[11px]')} style={{ textShadow: '0 1px 2px #000' }}>
-        {!offline && <span className="h-[8px] w-[8px] rounded-full bg-[#ff3b30]" style={{ animation: 'pf-alarm-blink 1.2s infinite' }} />}
+      <div className={clsx('absolute left-[10px] top-[8px] flex items-center gap-[8px] font-mono tracking-[0.5px] text-white', large ? 'text-[14px]' : 'text-[11px]')} style={{ textShadow: '0 1px 2px #000000' }}>
+        {!offline && <span className="h-[8px] w-[8px] rounded-full bg-[#d96b84]" style={{ animation: 'pf-alarm-blink 1.2s infinite' }} />}
         {offline ? 'OFFLINE' : 'REC'} · {cam.id}
       </div>
-      <div className={clsx('absolute right-[10px] top-[8px] font-mono text-white/90', large ? 'text-[14px]' : 'text-[11px]')} style={{ textShadow: '0 1px 2px #000' }}>
+      <div className={clsx('absolute right-[10px] top-[8px] font-mono text-white/90', large ? 'text-[14px]' : 'text-[11px]')} style={{ textShadow: '0 1px 2px #000000' }}>
         {now.toLocaleDateString('en-GB')} {now.toLocaleTimeString('en-GB')}
       </div>
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/80 to-transparent px-[10px] pb-[8px] pt-[24px]">

@@ -32,7 +32,7 @@ export function AssetPanel({ points: sources, children, ...panel }: AssetPanelPr
             setPoints((p) => !p);
           }}
           className="pf-chip flex h-[28px] shrink-0 items-center gap-[6px] whitespace-nowrap border px-[10px] text-[12px] font-medium tracking-[0.04em] transition-colors"
-          style={points ? { borderColor: '#4fdcff', color: '#9be9ff', background: 'rgba(79,220,255,0.1)' } : { borderColor: 'rgba(79,220,255,0.28)', color: '#8fb4ba', background: 'rgba(79,220,255,0.04)' }}
+          style={points ? { borderColor: '#9d78ff', color: '#9d78ff', background: 'rgba(157,120,255,0.1)' } : { borderColor: 'rgba(157,120,255,0.28)', color: '#bbaacb', background: 'rgba(157,120,255,0.04)' }}
           title={`Galaxy attributes of ${list.map((x) => x.tag).join(', ')}`}
           aria-pressed={points}
         >

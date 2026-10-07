@@ -78,8 +78,8 @@ export function ElectricSldScreen() {
             );
           })}
           <Bus x1={90} x2={700} y={150} live={utility} />
-          <Label x={168} y={140} color="#b4d3d8" weight={600}>
-            MV BUS <tspan fill={utility ? '#fff' : '#6f929a'} fontWeight={400}>{utility ? '22.0 kV' : '0 kV'}</tspan>
+          <Label x={168} y={140} color="#d0c0df" weight={600}>
+            MV BUS <tspan fill={utility ? '#ffffff' : '#5f526d'} fontWeight={400}>{utility ? '22.0 kV' : '0 kV'}</tspan>
           </Label>
 
           {/* ---- Transformers and LV incomers ---- */}
@@ -95,7 +95,7 @@ export function ElectricSldScreen() {
                 <Label x={x + 24} y={240} color="#ffffff">
                   {t.label} · 1600 kVA
                 </Label>
-                <Label x={x + 24} y={256} color={utility ? '#9be9ff' : '#6f929a'}>
+                <Label x={x + 24} y={256} color={utility ? '#9d78ff' : '#5f526d'}>
                   {fmt(num(tv.Active_Power))} kW · {fmt(num(tv.Load_Pct))}%
                 </Label>
                 <Label x={x + 24} y={272}>{fmt(num(tv.Winding_Temp))} °C winding</Label>
@@ -110,10 +110,10 @@ export function ElectricSldScreen() {
           <Bus x1={90} x2={355} y={345} live={utility} />
           <Bus x1={415} x2={700} y={345} live={utility} />
           <Label x={172} y={336} weight={600}>
-            MDB-A <tspan fill={utility ? '#fff' : '#6f929a'} fontWeight={400}>{utility ? '400 V' : '0 V'}</tspan>
+            MDB-A <tspan fill={utility ? '#ffffff' : '#5f526d'} fontWeight={400}>{utility ? '400 V' : '0 V'}</tspan>
           </Label>
           <Label x={500} y={336} weight={600}>
-            MDB-B <tspan fill={utility ? '#fff' : '#6f929a'} fontWeight={400}>{utility ? '400 V' : '0 V'}</tspan>
+            MDB-B <tspan fill={utility ? '#ffffff' : '#5f526d'} fontWeight={400}>{utility ? '400 V' : '0 V'}</tspan>
           </Label>
           <Wire points={[[355, 345], [376, 345]]} live={false} />
           <Wire points={[[394, 345], [415, 345]]} live={false} />
@@ -148,7 +148,7 @@ export function ElectricSldScreen() {
                 <Label x={x + 30} y={52} color="#ffffff" weight={600}>
                   {g.label}
                 </Label>
-                <Label x={x + 30} y={68} color={genLive ? '#9be9ff' : '#6f929a'}>
+                <Label x={x + 30} y={68} color={genLive ? '#9d78ff' : '#5f526d'}>
                   {running ? `${fmt(num(v.Output_kW))} kW` : 'Standby'}
                 </Label>
                 <Wire points={[[x, 82], [x, 121]]} live={genLive} />
@@ -159,7 +159,7 @@ export function ElectricSldScreen() {
           })}
           <Bus x1={930} x2={1320} y={175} live={gensOnLoad} />
           <Label x={934} y={198} weight={600}>
-            GEN BUS <tspan fill={gensOnLoad ? '#fff' : '#6f929a'} fontWeight={400}>{gensOnLoad ? '400 V · 50 Hz' : 'dead'}</tspan>
+            GEN BUS <tspan fill={gensOnLoad ? '#ffffff' : '#5f526d'} fontWeight={400}>{gensOnLoad ? '400 V · 50 Hz' : 'dead'}</tspan>
           </Label>
           <Wire points={[[1125, 175], [1125, 480]]} live={gensOnLoad} flow={gensOnLoad} />
 
@@ -168,7 +168,7 @@ export function ElectricSldScreen() {
           <Wire points={[[1125, 528], [1125, 560]]} live={emdbLive} flow={emdbLive} />
           <Bus x1={930} x2={1330} y={560} live={emdbLive} />
           <Label x={934} y={550} weight={600}>
-            EMDB <tspan fill={emdbLive ? '#fff' : '#6f929a'} fontWeight={400}>{emdbLive ? (utility ? 'on mains' : 'on generators') : 'dead'}</tspan>
+            EMDB <tspan fill={emdbLive ? '#ffffff' : '#5f526d'} fontWeight={400}>{emdbLive ? (utility ? 'on mains' : 'on generators') : 'dead'}</tspan>
           </Label>
           {EMDB_FEEDERS.map((f, i) => {
             const x = EMDB_X[i];
@@ -188,12 +188,12 @@ export function ElectricSldScreen() {
             items={[
               { label: 'Energised', swatch: <line x1={0} x2={18} y1={0} y2={0} stroke={LIVE} strokeWidth={3} /> },
               { label: 'De-energised', swatch: <line x1={0} x2={18} y1={0} y2={0} stroke={DEAD} strokeWidth={3} /> },
-              { label: 'Breaker closed', swatch: <rect x={2} y={-7} width={14} height={14} rx={2} fill={LIVE} stroke="#fff" /> },
-              { label: 'Breaker open', swatch: <rect x={2} y={-7} width={14} height={14} rx={2} fill="#031a1c" stroke="#4ade6b" /> },
-              { label: 'Power flow', swatch: <line x1={0} x2={18} y1={0} y2={0} stroke="#fff" strokeDasharray="4 4" strokeWidth={2} /> },
+              { label: 'Breaker closed', swatch: <rect x={2} y={-7} width={14} height={14} rx={2} fill={LIVE} stroke="#ffffff" /> },
+              { label: 'Breaker open', swatch: <rect x={2} y={-7} width={14} height={14} rx={2} fill="#060408" stroke="#7fcf9d" /> },
+              { label: 'Power flow', swatch: <line x1={0} x2={18} y1={0} y2={0} stroke="#ffffff" strokeDasharray="4 4" strokeWidth={2} /> },
             ]}
           />
-          <Label x={20} y={612} color="#79a4aa">
+          <Label x={20} y={612} color="#b09dc1">
             Click any breaker, transformer, generator or board for its Galaxy points.
           </Label>
         </svg>
@@ -202,7 +202,7 @@ export function ElectricSldScreen() {
 
       <Panel frame={side} index={1} icon={<SldIcon />} title={titleOf(sel)} subtitle={`${sel} · ${device.template.name}`}>
         <div className="pf-scroll absolute inset-x-[16px] bottom-[14px] top-[2px]">
-          <p className="mb-[10px] flex items-center gap-[8px] text-[13px]" style={{ color: device.live ? '#9be9ff' : '#6f929a' }}>
+          <p className="mb-[10px] flex items-center gap-[8px] text-[13px]" style={{ color: device.live ? '#9d78ff' : '#5f526d' }}>
             <span className="h-[8px] w-[8px] rounded-full" style={{ background: device.live ? LIVE : DEAD }} />
             {device.live ? 'Energised' : 'De-energised'} · {device.template.desc}
           </p>
@@ -214,7 +214,7 @@ export function ElectricSldScreen() {
 }
 
 export const SldIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
     <path d="M12 2v5M5 7h14M5 7v5M19 7v5M12 7v10M3 17h18" />
     <rect x="3.5" y="11" width="3" height="3" />
     <rect x="17.5" y="11" width="3" height="3" />

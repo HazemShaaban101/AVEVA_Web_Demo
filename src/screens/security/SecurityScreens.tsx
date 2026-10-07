@@ -1,9 +1,6 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import campus from '@/assets/renders/campus.webp';
-import buildingA02 from '@/assets/renders/building-a02.webp';
-import siteMapImg from '@/assets/renders/site-map.webp';
-import floorplan from '@/assets/renders/floorplan.webp';
+import aerial from '@/assets/renders/aerial.webp';
 import { Panel } from '@/components/frame/Panel';
 import { AssetPanel } from '@/components/frame/AssetPanel';
 import { CameraIcon, CardIcon, DoorIcon, GateIcon, ParkingIcon } from '@/components/icons/UiIcons';
@@ -17,6 +14,7 @@ import { row, stack } from '@/screens/layout';
 import { pickFrom, useEventCountToday, useEventStream, useEventTallyToday, type StreamSpec } from '@/sim/events';
 import { useSignal } from '@/sim/useSignal';
 import { useNow } from '@/sim/clock';
+import { useScenario } from '@/sim/scenario';
 import { rand01 } from '@/sim/noise';
 import { fmt } from '@/utils/format';
 import {
@@ -38,18 +36,18 @@ import {
  * ================================================================================================= */
 
 const CAMERAS: CameraSpec[] = [
-  { id: 'CAM-01', name: 'Main Entrance Plaza', zone: 'Entrances', src: buildingA02, focus: [55, 72], zoom: 1.7, pan: [-0.04, 0], status: 'online', motion: [[40, 55, 7, 16], [62, 60, 6, 14]] },
-  { id: 'CAM-02', name: 'Boulevard East', zone: 'Perimeter', src: campus, focus: [74, 62], zoom: 2.3, pan: [0.03, 0.01], status: 'online', motion: [[30, 50, 8, 10]] },
-  { id: 'CAM-03', name: 'Parking P1 Overview', zone: 'Parking', src: siteMapImg, focus: [28, 52], zoom: 2.6, pan: [0.02, -0.02], status: 'online', motion: [[50, 40, 6, 8]] },
-  { id: 'CAM-04', name: 'A02 GF Corridor', zone: 'Retail', src: floorplan, focus: [45, 62], zoom: 2.4, pan: [-0.02, 0.02], status: 'online' },
-  { id: 'CAM-05', name: 'Food Court Terrace', zone: 'Retail', src: buildingA02, focus: [42, 58], zoom: 2.3, pan: [0.03, 0], status: 'online', motion: [[55, 48, 7, 18]] },
-  { id: 'CAM-06', name: 'Service Road', zone: 'Service', src: campus, focus: [28, 72], zoom: 2.6, pan: [0.02, 0.02], status: 'online' },
-  { id: 'CAM-07', name: 'Rooftop Garden A02', zone: 'Rooftop', src: buildingA02, focus: [72, 32], zoom: 2.0, pan: [-0.03, 0.01], status: 'online' },
-  { id: 'CAM-08', name: 'Gate G2 · LPR', zone: 'Parking', src: siteMapImg, focus: [82, 40], zoom: 3.0, pan: [0.01, 0.02], status: 'online', motion: [[45, 45, 10, 10]] },
-  { id: 'CAM-09', name: 'Loading Bay 3', zone: 'Service', src: campus, focus: [15, 40], zoom: 2.8, pan: [0, 0], status: 'offline' },
-  { id: 'CAM-10', name: 'West Pavilions', zone: 'Perimeter', src: campus, focus: [40, 40], zoom: 2.4, pan: [0.02, 0], status: 'online' },
-  { id: 'CAM-11', name: 'A02 Lobby', zone: 'Entrances', src: floorplan, focus: [70, 40], zoom: 2.6, pan: [-0.02, 0], status: 'online', motion: [[35, 50, 6, 14]] },
-  { id: 'CAM-12', name: 'Parking P2 Ramp', zone: 'Parking', src: siteMapImg, focus: [55, 60], zoom: 2.8, pan: [0.02, 0.01], status: 'online' },
+  { id: 'CAM-01', name: 'Main Entrance Plaza', zone: 'Entrances', src: aerial, focus: [56, 52], zoom: 3.0, pan: [-0.04, 0], status: 'online', motion: [[40, 55, 7, 16], [62, 60, 6, 14]] },
+  { id: 'CAM-02', name: 'Boulevard East', zone: 'Perimeter', src: aerial, focus: [80, 45], zoom: 3.2, pan: [0.03, 0.01], status: 'online', motion: [[30, 50, 8, 10]] },
+  { id: 'CAM-03', name: 'Parking P1 Overview', zone: 'Parking', src: aerial, focus: [76, 70], zoom: 3.4, pan: [0.02, -0.02], status: 'online', motion: [[50, 40, 6, 8]] },
+  { id: 'CAM-04', name: 'A02 GF Corridor', zone: 'Retail', src: aerial, focus: [31, 42], zoom: 3.6, pan: [-0.02, 0.02], status: 'online' },
+  { id: 'CAM-05', name: 'Food Court Terrace', zone: 'Retail', src: aerial, focus: [43, 38], zoom: 3.3, pan: [0.03, 0], status: 'online', motion: [[55, 48, 7, 18]] },
+  { id: 'CAM-06', name: 'Service Road', zone: 'Service', src: aerial, focus: [16, 62], zoom: 3.3, pan: [0.02, 0.02], status: 'online' },
+  { id: 'CAM-07', name: 'Rooftop Garden A02', zone: 'Rooftop', src: aerial, focus: [54, 20], zoom: 3.0, pan: [-0.03, 0.01], status: 'online' },
+  { id: 'CAM-08', name: 'Gate G2 · LPR', zone: 'Parking', src: aerial, focus: [54, 86], zoom: 3.6, pan: [0.01, 0.02], status: 'online', motion: [[45, 45, 10, 10]] },
+  { id: 'CAM-09', name: 'Loading Bay 3', zone: 'Service', src: aerial, focus: [79, 47], zoom: 3.6, pan: [0, 0], status: 'offline' },
+  { id: 'CAM-10', name: 'West Pavilions', zone: 'Perimeter', src: aerial, focus: [33, 62], zoom: 3.4, pan: [0.02, 0], status: 'online' },
+  { id: 'CAM-11', name: 'A02 Lobby', zone: 'Entrances', src: aerial, focus: [30, 50], zoom: 3.8, pan: [-0.02, 0], status: 'online', motion: [[35, 50, 6, 14]] },
+  { id: 'CAM-12', name: 'Parking P2 Ramp', zone: 'Parking', src: aerial, focus: [84, 58], zoom: 3.4, pan: [0.02, 0.01], status: 'online' },
 ];
 
 const DETECTIONS: StreamSpec<{ cam: CameraSpec; kind: string }> = {
@@ -84,7 +82,7 @@ export function CctvScreen() {
                   onClick={() => c.status === 'online' && setSelected(c.id)}
                   className={`flex w-full items-center gap-[10px] rounded-[8px] px-[8px] py-[6px] text-left text-[15px] transition-colors ${c.id === selected ? 'bg-accent/15 text-accent' : 'text-ink-2 hover:bg-white/5'}`}
                 >
-                  <span className="h-[8px] w-[8px] rounded-full" style={{ background: c.status === 'online' ? '#4ade6b' : '#ef4444', boxShadow: `0 0 6px ${c.status === 'online' ? '#4ade6b' : '#ef4444'}` }} />
+                  <span className="h-[8px] w-[8px] rounded-full" style={{ background: c.status === 'online' ? '#7fcf9d' : '#d96b84', boxShadow: `0 0 6px ${c.status === 'online' ? '#7fcf9d' : '#d96b84'}` }} />
                   <span className="w-[62px] font-mono text-[12px] text-ink-4">{c.id}</span>
                   <span className="truncate">{c.name}</span>
                 </button>
@@ -193,10 +191,32 @@ export function AccessScreen() {
       </Panel>
       <AccessChannelsPanel frame={channels} />
       <TrendCard frame={trend} index={5} icon={<CardIcon />} title="Entries Per Hour" sim="security.entries" yTitle="Entries" decimals={0} dayHours={12} />
-      <Panel frame={doors} index={6} icon={door} title="Door Status" subtitle="Critical doors">
+      <Panel frame={doors} index={6} icon={door} title="Door Status" subtitle="Critical doors" action={<ForcedDoorDrill />}>
         <DoorStatus />
       </Panel>
     </>
+  );
+}
+
+/** Forced-door drill: the camera pops up with the intruder's face, and the ID if the face is known. */
+function ForcedDoorDrill() {
+  const active = useScenario((s) => s.intrusion.active);
+  const trigger = useScenario((s) => s.triggerIntrusion);
+  const clear = useScenario((s) => s.clearIntrusion);
+  const btn = 'pf-chip h-[34px] whitespace-nowrap border px-[11px] text-[13px] transition-colors';
+  return active ? (
+    <button onClick={clear} className={`${btn} border-alarm/70 bg-alarm/15 text-alarm-soft`}>
+      Door forced · Acknowledge
+    </button>
+  ) : (
+    <div className="flex gap-[8px]">
+      <button onClick={() => trigger(false)} className={`${btn} border-accent/45 bg-accent/[0.07] text-accent hover:bg-accent/15`} title="Simulate a forced door; the intruder's face is not in the database">
+        Force door · unknown
+      </button>
+      <button onClick={() => trigger(true)} className={`${btn} border-accent/45 bg-accent/[0.07] text-accent hover:bg-accent/15`} title="Simulate a forced door; the face matches a known ID">
+        Force door · known ID
+      </button>
+    </div>
   );
 }
 
@@ -268,10 +288,10 @@ function AccessChannelsPanel({ frame }: { frame: { x: number; y: number; w: numb
                 />
               );
             })}
-            <text x={75} y={74} textAnchor="middle" fill="#fff" fontSize={28} fontWeight={500}>
+            <text x={75} y={74} textAnchor="middle" fill="#ffffff" fontSize={28} fontWeight={500}>
               {fmt(total)}
             </text>
-            <text x={75} y={94} textAnchor="middle" fill="#79a4aa" fontSize={12}>
+            <text x={75} y={94} textAnchor="middle" fill="#b09dc1" fontSize={12}>
               entries today
             </text>
           </svg>
@@ -385,8 +405,8 @@ const FINED: Outcome[] = ['Fine at exit', 'Billed to plate', 'Towed'];
 /** Egyptian plate: white body under a blue band reading "مصر  EGYPT". */
 function Plate({ text }: { text: string }) {
   return (
-    <span className="inline-flex flex-col overflow-hidden rounded-[4px] border border-[#1b3a8a] bg-white text-center leading-none" style={{ width: 150 }}>
-      <span className="flex justify-between bg-[#2458d3] px-[6px] py-[1px] text-[8px] font-semibold text-white">
+    <span className="inline-flex flex-col overflow-hidden rounded-[4px] border border-[#391b5b] bg-white text-center leading-none" style={{ width: 150 }}>
+      <span className="flex justify-between bg-[#56278b] px-[6px] py-[1px] text-[8px] font-semibold text-white">
         <span>EGYPT</span>
         <span>مصر</span>
       </span>
@@ -439,7 +459,7 @@ export function ParkingScreen() {
         <div className="absolute inset-x-[24px] top-[6px] flex flex-col">
           <StatRow label="Free spaces" note={`of ${fmt(CAPACITY)} · guidance signs live`} value={free} unit="free" />
           <StatRow label="Entries" note="LPR reads · inbound, 5 gates" value={entries} unit="cars" />
-          <StatRow label="Watchlist hits" note={hits ? <Tag tone="bad">Security notified</Tag> : 'None today'} value={hits} unit="plates" tone={hits ? '#f87171' : undefined} />
+          <StatRow label="Watchlist hits" note={hits ? <Tag tone="bad">Security notified</Tag> : 'None today'} value={hits} unit="plates" tone={hits ? '#e0889b' : undefined} />
         </div>
       </Panel>
 
@@ -500,7 +520,7 @@ function ViolationsPanel({ frame }: { frame: { x: number; y: number; w: number; 
             <span className="text-[44px] font-medium leading-none tabular-nums text-white">
               <AnimatedNumber value={total} />
             </span>
-            <span className="text-[16px] text-[#79a4aa]">today</span>
+            <span className="text-[16px] text-[#b09dc1]">today</span>
           </span>
           <span className="flex flex-col text-[13px] text-ink-3">
             Open now
@@ -521,7 +541,7 @@ function ViolationsPanel({ frame }: { frame: { x: number; y: number; w: number; 
                 <div key={v.type} className="flex items-center gap-[10px] text-[14px]" title={v.detect}>
                   <span className="w-[124px] shrink-0 truncate text-ink-2">{v.type}</span>
                   <span className="relative h-[6px] flex-1 overflow-hidden rounded-full bg-white/10">
-                    <motion.span className="absolute inset-y-0 left-0 rounded-full bg-accent" style={{ boxShadow: '0 0 8px #4fdcff' }} initial={{ width: 0 }} animate={{ width: `${(n / top) * 100}%` }} transition={{ duration: 0.8 }} />
+                    <motion.span className="absolute inset-y-0 left-0 rounded-full bg-accent" style={{ boxShadow: '0 0 8px #9d78ff' }} initial={{ width: 0 }} animate={{ width: `${(n / top) * 100}%` }} transition={{ duration: 0.8 }} />
                   </span>
                   <span className="w-[30px] text-right tabular-nums text-white">{n}</span>
                 </div>
@@ -561,10 +581,10 @@ function StatRow({ label, note, value, unit, tone }: { label: string; note: Reac
         <span className="text-[14px] text-aqua">{note}</span>
       </div>
       <span className="flex items-baseline gap-[6px]">
-        <span className="text-[38px] font-medium leading-none tabular-nums" style={{ color: tone ?? '#fff' }}>
+        <span className="text-[38px] font-medium leading-none tabular-nums" style={{ color: tone ?? '#ffffff' }}>
           {value === null ? '—' : <AnimatedNumber value={value} />}
         </span>
-        <span className="text-[16px] text-[#79a4aa]">{unit}</span>
+        <span className="text-[16px] text-[#b09dc1]">{unit}</span>
       </span>
     </div>
   );
@@ -635,12 +655,12 @@ function GateCard({ gate, index, lastEvent }: { gate: (typeof GATES)[number]; in
   return (
     <div className="flex h-full items-center gap-[20px] px-[18px] pb-[10px]">
       <svg viewBox="0 0 160 90" width={160} height={90}>
-        <rect x={8} y={40} width={16} height={46} rx={3} fill="#3a3f5c" stroke="#4fc3d4" />
-        <circle cx={16} cy={46} r={4} fill={open ? '#4ade6b' : emergency ? '#8fb4ba' : '#ef4444'} style={{ filter: `drop-shadow(0 0 4px ${open ? '#4ade6b' : '#ef4444'})` }} />
+        <rect x={8} y={40} width={16} height={46} rx={3} fill="#3a3f5c" stroke="#b58ce3" />
+        <circle cx={16} cy={46} r={4} fill={open ? '#7fcf9d' : emergency ? '#bbaacb' : '#d96b84'} style={{ filter: `drop-shadow(0 0 4px ${open ? '#7fcf9d' : '#d96b84'})` }} />
         <motion.g style={{ originX: '16px', originY: '52px' }} animate={{ rotate: open ? -80 : 0 }} transition={{ type: 'spring', stiffness: 90, damping: 14 }}>
-          <rect x={16} y={49} width={138} height={7} rx={3.5} fill="#f5f6f8" />
+          <rect x={16} y={49} width={138} height={7} rx={3.5} fill="#e6e3e8" />
           {[0, 1, 2, 3, 4].map((i) => (
-            <rect key={i} x={30 + i * 26} y={49} width={13} height={7} fill="#ef4444" />
+            <rect key={i} x={30 + i * 26} y={49} width={13} height={7} fill="#d96b84" />
           ))}
         </motion.g>
         <line x1={0} x2={160} y1={87} y2={87} stroke="rgba(255,255,255,0.2)" />

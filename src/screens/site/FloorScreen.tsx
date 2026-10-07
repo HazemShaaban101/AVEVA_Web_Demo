@@ -78,10 +78,10 @@ export default function FloorScreen() {
           <LegendChip key="dampers">
             <span className="text-accent">◆</span> Damper Status
             <span className="flex items-center gap-[6px] text-ok">
-              <Dot color="#4ade6b" /> Open
+              <Dot color="#7fcf9d" /> Open
             </span>
             <span className="flex items-center gap-[6px] text-[#7a7c90]">
-              <Dot color="#8aa5aa" /> Closed
+              <Dot color="#b5a8c0" /> Closed
             </span>
           </LegendChip>
         )}
@@ -115,7 +115,7 @@ function DeviceMarker({ device, floor, index, selected, onSelect }: { device: Pl
 
   const alarm = device.system === 'fire' && fireActive && (device.id === 'sd-05' || device.id === 'sd-06');
   const icon =
-    device.system === 'hvac' ? <Glyph id="fan" size={16} color="#fff" /> : device.system === 'elevators' ? <ElevatorIcon size={16} className="text-white" /> : device.system === 'metering' ? <PowerIcon size={15} className="text-white" /> : <Glyph id="flame" size={14} color="#fff" />;
+    device.system === 'hvac' ? <Glyph id="fan" size={16} color="#ffffff" /> : device.system === 'elevators' ? <ElevatorIcon size={16} className="text-white" /> : device.system === 'metering' ? <PowerIcon size={15} className="text-white" /> : <Glyph id="flame" size={14} color="#ffffff" />;
 
   return (
     <motion.button
@@ -127,13 +127,13 @@ function DeviceMarker({ device, floor, index, selected, onSelect }: { device: Pl
       className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-[6px] rounded-full py-[4px] pl-[4px] pr-[10px] text-[12px] text-white"
       style={{
         ...pos,
-        background: alarm ? 'rgba(239,68,68,0.9)' : selected ? 'rgba(79,195,212,0.95)' : 'rgba(10,52,56,0.85)',
-        border: `1px solid ${alarm ? '#ff9a9a' : selected ? '#fff' : 'rgba(79,195,212,0.7)'}`,
-        boxShadow: alarm ? '0 0 16px #ef4444' : '0 6px 16px rgba(0,0,0,0.45)',
+        background: alarm ? 'rgba(217,107,132,0.9)' : selected ? 'rgba(181,140,227,0.95)' : 'rgba(13,8,18,0.85)',
+        border: `1px solid ${alarm ? '#eaaab9' : selected ? '#ffffff' : 'rgba(181,140,227,0.7)'}`,
+        boxShadow: alarm ? '0 0 16px #d96b84' : '0 6px 16px rgba(0,0,0,0.45)',
         animation: alarm ? 'pf-alarm-blink 0.9s infinite' : undefined,
       }}
     >
-      <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full" style={{ background: alarm ? '#b91c1c' : '#2f8f9e' }}>
+      <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full" style={{ background: alarm ? '#a9506a' : '#482a6a' }}>
         {icon}
       </span>
       {device.label}
@@ -159,7 +159,7 @@ function AhuMarker({ device, pos, anim, onSelect }: { device: PlanDevice; pos: R
       style={pos}
     >
       <span className="absolute left-1/2 top-1/2 h-[46px] w-[46px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/40" style={{ animation: 'pf-pulse-ring 2s ease-out infinite' }} />
-      <span className="relative flex items-center gap-[8px] rounded-[8px] border border-accent bg-night-900/90 py-[6px] pl-[6px] pr-[12px] text-left shadow-[0_0_18px_rgba(79,220,255,0.5)] transition-transform group-hover:scale-105">
+      <span className="relative flex items-center gap-[8px] rounded-[8px] border border-accent bg-night-900/90 py-[6px] pl-[6px] pr-[12px] text-left shadow-[0_0_18px_rgba(157,120,255,0.5)] transition-transform group-hover:scale-105">
         <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-accent">
           <motion.span animate={running ? { rotate: 360 } : { rotate: 0 }} transition={running ? { duration: 1.2, repeat: Infinity, ease: 'linear' } : {}}>
             <Glyph id="fan" size={20} color="#1b1200" />
@@ -183,8 +183,8 @@ function DamperTag({ device, floor, pos, anim }: { device: PlanDevice; floor: st
   const open = useScenario((s) => s.dampers[key] ?? rand01(device.id.length + device.x, 7) > 0.2);
   const setDamper = useScenario((s) => s.setDamper);
   return (
-    <motion.div {...anim} className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-[8px] rounded-[8px] bg-white px-[8px] py-[4px] font-[family-name:var(--font-plain)] text-[12px] text-[#0d3438] shadow-[0_6px_16px_rgba(0,0,0,0.4)]" style={pos} onClick={(e) => e.stopPropagation()}>
-      <Dot color={open ? '#4ade6b' : '#8aa5aa'} />
+    <motion.div {...anim} className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-[8px] rounded-[8px] bg-white px-[8px] py-[4px] font-[family-name:var(--font-plain)] text-[12px] text-[#07050a] shadow-[0_6px_16px_rgba(0,0,0,0.4)]" style={pos} onClick={(e) => e.stopPropagation()}>
+      <Dot color={open ? '#7fcf9d' : '#b5a8c0'} />
       {device.label}
       <Toggle on={open} onChange={(v) => setDamper(key, v)} label={`${device.label} ${open ? 'open' : 'closed'}`} />
     </motion.div>
@@ -217,12 +217,12 @@ function ElevatorCard({ device, floor, pos }: { device: PlanDevice; floor: strin
       {rows.map(([k, v, bad]) => (
         <div key={k} className="flex items-center justify-between py-[4px] text-[13px]">
           <span>{k}</span>
-          <span className="min-w-[120px] rounded-[8px] border px-[8px] py-[2px] text-center" style={{ borderColor: bad ? '#ef4444' : '#4fc3d4', color: bad ? '#ef4444' : '#2f8f9e', fontWeight: bad ? 600 : 400 }}>
+          <span className="min-w-[120px] rounded-[8px] border px-[8px] py-[2px] text-center" style={{ borderColor: bad ? '#d96b84' : '#b58ce3', color: bad ? '#d96b84' : '#482a6a', fontWeight: bad ? 600 : 400 }}>
             {v}
           </span>
         </div>
       ))}
-      <p className="pt-[4px] text-[10px] text-[#8fb4ba]">Floor {floor.toUpperCase()} landing</p>
+      <p className="pt-[4px] text-[10px] text-[#bbaacb]">Floor {floor.toUpperCase()} landing</p>
     </InfoCard>
   );
 }
@@ -243,10 +243,10 @@ function MeterCard({ device, floor, pos }: { device: PlanDevice; floor: string; 
       className="w-[190px] -translate-x-1/2 -translate-y-full"
       style={{ ...pos, marginTop: -10 }}
     >
-      <p className="mb-[4px] text-[11px] text-[#8fb4ba]">{device.label}</p>
+      <p className="mb-[4px] text-[11px] text-[#bbaacb]">{device.label}</p>
       {(
         [
-          [<BtuIcon key="b" size={14} className="text-[#56c8f5]" />, `${fmt(btu)} BTU`],
+          [<BtuIcon key="b" size={14} className="text-[#b378f8]" />, `${fmt(btu)} BTU`],
           [<DropIcon key="d" size={14} className="text-[#6b8cff]" />, `${fmt(m3)} m³`],
           [<PowerIcon key="p" size={14} className="text-accent" />, `${fmt(kw)} kW`],
         ] as const
@@ -265,11 +265,11 @@ function FireChip() {
   return (
     <LegendChip>
       <span className="flex h-[30px] w-[30px] items-center justify-center rounded-[8px] bg-[#e6e7ff]">
-        <Glyph id="fire" size={20} color={active ? '#ef4444' : '#2f8f9e'} />
+        <Glyph id="fire" size={20} color={active ? '#d96b84' : '#482a6a'} />
       </span>
       Fire Alarm System
       <span className={`flex items-center gap-[8px] ${active ? 'text-alarm' : 'text-ok'}`} style={active ? { animation: 'pf-alarm-blink 0.9s infinite' } : undefined}>
-        <Dot color={active ? '#ef4444' : '#4ade6b'} /> {active ? 'Alarm' : 'Normal'}
+        <Dot color={active ? '#d96b84' : '#7fcf9d'} /> {active ? 'Alarm' : 'Normal'}
       </span>
     </LegendChip>
   );

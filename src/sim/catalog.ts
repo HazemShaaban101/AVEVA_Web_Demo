@@ -19,12 +19,18 @@ const DEFS = {
   'env.co2': { unit: 'ppm', low: 410, high: 620, profile: 'occupancy', noise: 0.05, decimals: 0 },
   'env.humidity': { unit: '%', low: 42, high: 50, profile: 'hvac', noise: 0.2, decimals: 0 },
   'env.oxygen': { unit: '%', low: 20.9, high: 20.7, profile: 'occupancy', noise: 0.2, decimals: 1 },
+  'env.voc': { unit: 'ppb', low: 90, high: 280, profile: 'occupancy', noise: 0.12, decimals: 0 },
   'env.pm25': { unit: 'µg/m³', low: 9, high: 18, profile: 'retail', noise: 0.15, decimals: 0 },
   'power.transformerKpi': { unit: '%', low: 48, high: 82, profile: 'retail', noise: 0.04, decimals: 1 },
   'power.active': { unit: 'kW', low: 2400, high: 6400, profile: 'retail', noise: 0.04, decimals: 0 },
   'power.reactive': { unit: 'kVAR', low: 520, high: 1250, profile: 'retail', noise: 0.05, decimals: 0 },
   'water.irrigation.daily': { unit: 'm³', low: 60, high: 95, profile: 'flat', noise: 0.25, drift: 2000, decimals: 0 },
   'water.consumption.daily': { unit: 'm³', low: 70, high: 100, profile: 'flat', noise: 0.25, drift: 2000, decimals: 0 },
+
+  // ---- External infrastructure (3D View) ---------------------------------------------------------
+  'infra.lightsOn': { unit: 'lamps', low: 0, high: 148, profile: 'night', noise: 0.01, drift: 600, decimals: 0, clampMin: 0, clampMax: 148 },
+  'infra.cctvOnline': { unit: 'cams', low: 306, high: 312, profile: 'flat', noise: 0.4, drift: 240, decimals: 0, clampMax: 320 },
+  'infra.binsFull': { unit: 'bins', low: 3, high: 15, profile: 'retail', noise: 0.15, drift: 90, decimals: 0, clampMin: 0 },
 
   // ---- Electric ---------------------------------------------------------------------------------
   'electric.transformerLoad': { unit: '%', low: 42, high: 84, profile: 'retail', noise: 0.04, decimals: 0 },

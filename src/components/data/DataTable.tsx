@@ -33,8 +33,8 @@ export function DataTable<T>({ columns, rows, rowKey, highlight, onRowClick, den
               <motion.div
                 key={rowKey(r)}
                 layout="position"
-                initial={{ opacity: 0, y: -12, backgroundColor: 'rgba(79,220,255,0.18)' }}
-                animate={{ opacity: 1, y: 0, backgroundColor: hl === 'alarm' ? 'rgba(239,68,68,0.10)' : hl === 'warn' ? 'rgba(255,176,32,0.07)' : 'rgba(0,0,0,0)' }}
+                initial={{ opacity: 0, y: -12, backgroundColor: 'rgba(157,120,255,0.18)' }}
+                animate={{ opacity: 1, y: 0, backgroundColor: hl === 'alarm' ? 'rgba(217,107,132,0.10)' : hl === 'warn' ? 'rgba(232,169,140,0.07)' : 'rgba(0,0,0,0)' }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.45 }}
                 onClick={onRowClick ? () => onRowClick(r) : undefined}
@@ -58,11 +58,11 @@ export function DataTable<T>({ columns, rows, rowKey, highlight, onRowClick, den
 export type TagTone = 'good' | 'bad' | 'warn' | 'info' | 'idle';
 
 const TAG: Record<TagTone, { bg: string; fg: string; border: string }> = {
-  good: { bg: 'rgba(74,222,107,0.12)', fg: '#4ade6b', border: 'rgba(74,222,107,0.35)' },
-  bad: { bg: 'rgba(239,68,68,0.14)', fg: '#ff6b6b', border: 'rgba(239,68,68,0.5)' },
-  warn: { bg: 'rgba(255,176,32,0.12)', fg: '#ffbe45', border: 'rgba(255,176,32,0.45)' },
-  info: { bg: 'rgba(79,220,255,0.08)', fg: '#6fe3ff', border: 'rgba(79,220,255,0.45)' },
-  idle: { bg: 'rgba(121,164,170,0.07)', fg: '#8fb4ba', border: 'rgba(121,164,170,0.25)' },
+  good: { bg: 'rgba(255,255,255,0.04)', fg: '#cfc3dc', border: 'rgba(255,255,255,0.14)' },
+  bad: { bg: 'rgba(217,107,132,0.14)', fg: '#e59aaa', border: 'rgba(217,107,132,0.5)' },
+  warn: { bg: 'rgba(232,169,140,0.12)', fg: '#eeb89e', border: 'rgba(232,169,140,0.45)' },
+  info: { bg: 'rgba(157,120,255,0.08)', fg: '#9d78ff', border: 'rgba(157,120,255,0.45)' },
+  idle: { bg: 'rgba(176,157,193,0.07)', fg: '#bbaacb', border: 'rgba(176,157,193,0.25)' },
 };
 
 /** Small status tag for tables and lists (the Status.svg pills, shrunk). */
@@ -70,7 +70,7 @@ export function Tag({ tone, children, dot = true }: { tone: TagTone; children: R
   const t = TAG[tone];
   return (
     <span className="inline-flex items-center gap-[6px] whitespace-nowrap rounded-full border px-[9px] py-[1px] text-[10.5px] font-bold uppercase leading-[18px] tracking-[0.07em]" style={{ background: t.bg, color: t.fg, borderColor: t.border }}>
-      {dot && <span className="h-[6px] w-[6px] rounded-full" style={{ background: t.fg, boxShadow: `0 0 6px ${t.fg}` }} />}
+      {dot && <span className="h-[6px] w-[6px] rounded-full" style={{ background: tone === 'good' ? '#7fcf9d' : t.fg, boxShadow: tone === 'good' ? undefined : `0 0 6px ${t.fg}` }} />}
       {children}
     </span>
   );
@@ -78,11 +78,12 @@ export function Tag({ tone, children, dot = true }: { tone: TagTone; children: R
 
 /** Thin horizontal meter (health, occupancy, progress). */
 export function Meter({ value, tone = 'info', width = 120, label = true }: { value: number; tone?: TagTone; width?: number; label?: boolean }) {
-  const color = TAG[tone].fg;
+  // Healthy bars use the accent; only warnings and alarms change colour.
+  const color = tone === 'good' ? '#9d78ff' : TAG[tone].fg;
   return (
     <span className="inline-flex items-center gap-[8px]">
       <span className="relative inline-block h-[4px] overflow-hidden rounded-full bg-white/[0.08]" style={{ width }}>
-        <motion.span className="absolute inset-y-0 left-0 rounded-full" style={{ background: color, boxShadow: `0 0 8px ${color}` }} initial={{ width: 0 }} animate={{ width: `${Math.max(0, Math.min(100, value))}%` }} transition={{ duration: 0.8 }} />
+        <motion.span className="absolute inset-y-0 left-0 rounded-full" style={{ background: color, boxShadow: tone === 'good' ? undefined : `0 0 8px ${color}` }} initial={{ width: 0 }} animate={{ width: `${Math.max(0, Math.min(100, value))}%` }} transition={{ duration: 0.8 }} />
       </span>
       {label && <span className="w-[38px] text-right text-[13px] tabular-nums text-ink-2">{Math.round(value)}%</span>}
     </span>

@@ -45,15 +45,15 @@ export const CALLOUT_ANCHORS: Record<'damper' | 'filter' | 'valve' | 'fan' | 'mo
 
 /* ---- Materials ----------------------------------------------------------------------------------- */
 
-const CYAN = new THREE.Color('#4fdcff');
+const CYAN = new THREE.Color('#9d78ff');
 const std = (color: string, metalness: number, roughness: number) => new THREE.MeshStandardMaterial({ color, metalness, roughness });
 // Casing materials never glow, so one shared instance each.
 const M = {
-  casing: std('#e4e7ec', 0.3, 0.5),
-  inner: std('#b9c0ca', 0.2, 0.75),
-  frame: std('#8d95a1', 0.5, 0.4),
-  skid: std('#4d5561', 0.5, 0.5),
-  dark: std('#2a2e36', 0.4, 0.6),
+  casing: std('#e6e0eb', 0.3, 0.5),
+  inner: std('#cdc6d4', 0.2, 0.75),
+  frame: std('#b3abba', 0.5, 0.4),
+  skid: std('#3e3944', 0.5, 0.5),
+  dark: std('#121015', 0.4, 0.6),
 };
 
 interface MatSpec {
@@ -191,7 +191,7 @@ function Casing() {
 
 function Damper({ open, hot }: { open: boolean; hot: boolean }) {
   const blades = useRef<THREE.Group>(null);
-  const blade = useHotMaterial({ color: '#9fb4c9', metalness: 0.6, roughness: 0.35 }, hot);
+  const blade = useHotMaterial({ color: '#c5b4d5', metalness: 0.6, roughness: 0.35 }, hot);
   const actuator = useHotMaterial({ color: '#f08a24', metalness: 0.2, roughness: 0.5 }, hot);
   useFrame((_, dt) => {
     const target = open ? THREE.MathUtils.degToRad(72) : 0;
@@ -227,8 +227,8 @@ const placePleat = (i: number, o: THREE.Object3D) => {
 };
 
 function Filter({ alarm, hot }: { alarm: boolean; hot: boolean }) {
-  const media = useHotMaterial({ color: alarm ? '#e25555' : '#f2c230', metalness: 0.05, roughness: 0.9, emissive: alarm ? '#ff2a2a' : undefined, emissiveIntensity: alarm ? 0.5 : 0 }, hot);
-  const rack = useHotMaterial({ color: '#a7afba', metalness: 0.5, roughness: 0.4 }, hot);
+  const media = useHotMaterial({ color: alarm ? '#d96b84' : '#e8a98c', metalness: 0.05, roughness: 0.9, emissive: alarm ? '#d96b84' : undefined, emissiveIntensity: alarm ? 0.5 : 0 }, hot);
+  const rack = useHotMaterial({ color: '#c2bbc9', metalness: 0.5, roughness: 0.4 }, hot);
   return (
     <group>
       <Box size={[0.16, 0.08, D - 0.12]} position={[FILTER_X, Y1 - 0.14, 0]} material={rack} />
@@ -254,11 +254,11 @@ const PIPE_Y = Y0 + 0.25; // pipes leave the headers here, run out front, then d
 const PIPE_Z = 1.45;
 
 function Coil({ valve, hot }: { valve: number; hot: boolean }) {
-  const tint = useMemo(() => new THREE.Color('#b87333').lerp(new THREE.Color('#3aa8ff'), valve).getStyle(), [valve]);
-  const fins = useHotMaterial({ color: tint, metalness: 0.7, roughness: 0.3, emissive: '#1f7bff', emissiveIntensity: valve * 0.3 }, hot);
+  const tint = useMemo(() => new THREE.Color('#b87333').lerp(new THREE.Color('#6174ff'), valve).getStyle(), [valve]);
+  const fins = useHotMaterial({ color: tint, metalness: 0.7, roughness: 0.3, emissive: '#4c61ff', emissiveIntensity: valve * 0.3 }, hot);
   const tubes = useHotMaterial({ color: '#c47a3a', metalness: 0.8, roughness: 0.3 }, hot);
-  const frame = useHotMaterial({ color: '#a7afba', metalness: 0.5, roughness: 0.4 }, hot);
-  const pipe = useHotMaterial({ color: '#c9d6e3', metalness: 0.75, roughness: 0.3 }, hot);
+  const frame = useHotMaterial({ color: '#c2bbc9', metalness: 0.5, roughness: 0.4 }, hot);
+  const pipe = useHotMaterial({ color: '#dacde5', metalness: 0.75, roughness: 0.3 }, hot);
   return (
     <group>
       {/* casing frame */}
@@ -288,7 +288,7 @@ function Coil({ valve, hot }: { valve: number; hot: boolean }) {
 function Valve({ valve, hot }: { valve: number; hot: boolean }) {
   const pointer = useRef<THREE.Mesh>(null);
   const body = useHotMaterial({ color: '#2b4bd6', metalness: 0.5, roughness: 0.35 }, hot);
-  const steel = useHotMaterial({ color: '#c9ccd2', metalness: 0.7, roughness: 0.3 }, hot);
+  const steel = useHotMaterial({ color: '#d4d0d8', metalness: 0.7, roughness: 0.3 }, hot);
   const handle = useHotMaterial({ color: '#e0773a', metalness: 0.3, roughness: 0.5 }, hot);
   useFrame((_, dt) => {
     if (pointer.current) pointer.current.rotation.y = THREE.MathUtils.damp(pointer.current.rotation.y, valve * Math.PI * 0.5, 4, dt);
@@ -323,9 +323,9 @@ const placeBlade = (i: number, o: THREE.Object3D) => {
 function Fan({ running, speed, tripped, hot }: { running: boolean; speed: number; tripped: boolean; hot: boolean }) {
   const wheel = useRef<THREE.Group>(null);
   const omega = useRef(0);
-  const blades = useHotMaterial({ color: '#d7dde5', metalness: 0.7, roughness: 0.3, emissive: tripped ? '#ff2020' : undefined, emissiveIntensity: tripped ? 0.4 : 0 }, hot);
-  const plate = useHotMaterial({ color: tripped ? '#b33333' : '#aeb6c2', metalness: 0.55, roughness: 0.35 }, hot);
-  const cone = useHotMaterial({ color: '#9aa3af', metalness: 0.5, roughness: 0.4, side: THREE.DoubleSide }, hot);
+  const blades = useHotMaterial({ color: '#e6e0eb', metalness: 0.7, roughness: 0.3, emissive: tripped ? '#d96b84' : undefined, emissiveIntensity: tripped ? 0.4 : 0 }, hot);
+  const plate = useHotMaterial({ color: tripped ? '#9a4a62' : '#c7bece', metalness: 0.55, roughness: 0.35 }, hot);
+  const cone = useHotMaterial({ color: '#bbb2c2', metalness: 0.5, roughness: 0.4, side: THREE.DoubleSide }, hot);
   useFrame((_, dt) => {
     // Spin up / coast down instead of jumping: ~2 s to reach speed.
     const target = running ? 4 + speed * 16 : 0;
@@ -353,12 +353,12 @@ function Fan({ running, speed, tripped, hot }: { running: boolean; speed: number
 }
 
 function Motor({ running, hot }: { running: boolean; hot: boolean }) {
-  const body = useHotMaterial({ color: '#c7ccd4', metalness: 0.6, roughness: 0.35 }, hot);
-  const cap = useHotMaterial({ color: '#8e96a2', metalness: 0.6, roughness: 0.4 }, hot);
-  const cabinet = useHotMaterial({ color: '#dfe3ea', metalness: 0.3, roughness: 0.5 }, hot);
+  const body = useHotMaterial({ color: '#d4ced9', metalness: 0.6, roughness: 0.35 }, hot);
+  const cap = useHotMaterial({ color: '#b4acba', metalness: 0.6, roughness: 0.4 }, hot);
+  const cabinet = useHotMaterial({ color: '#e6e0eb', metalness: 0.3, roughness: 0.5 }, hot);
   const screen = useMemo(() => new THREE.MeshBasicMaterial({ toneMapped: false }), []);
   useEffect(() => () => screen.dispose(), [screen]);
-  screen.color.set(running ? '#39e58c' : '#3a4150');
+  screen.color.set(running ? '#39e58c' : '#1a161e');
   const r = 0.27;
   return (
     <group>
@@ -381,7 +381,7 @@ function Motor({ running, hot }: { running: boolean; hot: boolean }) {
 /* ---- Outlet duct + smoke detector --------------------------------------------------------------- */
 
 function Outlet({ hot }: { hot: boolean }) {
-  const duct = useHotMaterial({ color: '#e4e7ec', metalness: 0.3, roughness: 0.5 }, hot);
+  const duct = useHotMaterial({ color: '#e6e0eb', metalness: 0.3, roughness: 0.5 }, hot);
   return (
     <group position={[DUCT_X, CY, 0]}>
       <Box size={[1.4, 1.2, 1.3]} position={[0, 0, 0]} material={duct} />
@@ -393,7 +393,7 @@ function Outlet({ hot }: { hot: boolean }) {
 
 function SmokeDetector({ smoke, hot }: { smoke: boolean; hot: boolean }) {
   const lamp = useRef<THREE.MeshStandardMaterial>(null);
-  const housing = useHotMaterial({ color: '#d62b2b', metalness: 0.2, roughness: 0.5 }, hot);
+  const housing = useHotMaterial({ color: '#c25a74', metalness: 0.2, roughness: 0.5 }, hot);
   useFrame(({ clock }) => {
     if (lamp.current) lamp.current.emissiveIntensity = smoke ? 0.6 + Math.sin(clock.elapsedTime * 10) * 0.6 : 0.1;
   });
@@ -402,7 +402,7 @@ function SmokeDetector({ smoke, hot }: { smoke: boolean; hot: boolean }) {
       <Box size={[0.3, 0.36, 0.1]} position={[0, 0, 0]} material={housing} />
       <mesh position={[0, 0, 0.06]} rotation={[Math.PI / 2, 0, 0]}>
         <cylinderGeometry args={[0.07, 0.07, 0.02, 20]} />
-        <meshStandardMaterial ref={lamp} color="#ffffff" emissive="#ff3030" emissiveIntensity={0.1} />
+        <meshStandardMaterial ref={lamp} color="#ffffff" emissive="#d96b84" emissiveIntensity={0.1} />
       </mesh>
     </group>
   );
@@ -438,7 +438,7 @@ function Airflow({ running, speed, flow }: { running: boolean; speed: number; fl
   return (
     <instancedMesh ref={mesh} args={[undefined, undefined, count]} frustumCulled={false}>
       <boxGeometry args={[0.16, 0.018, 0.018]} />
-      <meshBasicMaterial color={flow || running ? '#7fe3ff' : '#99aaaa'} transparent opacity={0.85} toneMapped={false} depthWrite={false} />
+      <meshBasicMaterial color={flow || running ? '#9d78ff' : '#b9b2bf'} transparent opacity={0.85} toneMapped={false} depthWrite={false} />
     </instancedMesh>
   );
 }

@@ -2,8 +2,15 @@ import { useEffect, useId } from 'react';
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
 import { AnimatedNumber } from '@/components/gauges/AnimatedNumber';
 import { clamp } from '@/utils/format';
+import { TONE_COLOR, type Tone } from '@/components/controls/Controls';
 
-const CYAN = '#4fdcff';
+const CYAN = '#9d78ff';
+
+/**
+ * The colour of the number a gauge shows: white while healthy, amber / red for a warning / alarm. The
+ * moving arc itself never changes colour — the alarm is read on the number.
+ */
+export const numberColor = (tone: Tone | undefined, normal = '#ffffff') => (tone === 'warn' || tone === 'bad' ? TONE_COLOR[tone] : normal);
 
 const polar = (cx: number, cy: number, r: number, deg: number) => {
   const a = ((deg - 90) * Math.PI) / 180;
@@ -23,13 +30,13 @@ function Knob({ cx, cy, scale = 1, id }: { cx: number; cy: number; scale?: numbe
     <g>
       <defs>
         <radialGradient id={`${id}-core`} cx="45%" cy="36%" r="72%">
-          <stop offset="0" stopColor="#063036" />
-          <stop offset="1" stopColor="#010b0c" />
+          <stop offset="0" stopColor="#0c0710" />
+          <stop offset="1" stopColor="#030103" />
         </radialGradient>
       </defs>
-      <circle cx={cx} cy={cy} r={76 * scale} fill="#010b0c" fillOpacity={0.55} stroke="rgba(79,220,255,0.2)" strokeWidth={1} />
-      <circle cx={cx} cy={cy} r={69 * scale} fill="none" stroke="rgba(79,220,255,0.2)" strokeWidth={1} strokeDasharray="2 4" />
-      <circle cx={cx} cy={cy} r={61 * scale} fill={`url(#${id}-core)`} stroke="rgba(79,220,255,0.3)" strokeWidth={0.8} />
+      <circle cx={cx} cy={cy} r={76 * scale} fill="#030103" fillOpacity={0.55} stroke="rgba(157,120,255,0.2)" strokeWidth={1} />
+      <circle cx={cx} cy={cy} r={69 * scale} fill="none" stroke="rgba(157,120,255,0.2)" strokeWidth={1} strokeDasharray="2 4" />
+      <circle cx={cx} cy={cy} r={61 * scale} fill={`url(#${id}-core)`} stroke="rgba(157,120,255,0.3)" strokeWidth={0.8} />
     </g>
   );
 }
@@ -43,14 +50,18 @@ export interface DialGaugeProps {
   size?: number;
   /** Override the big number (e.g. "115"), defaults to the formatted value. */
   display?: string;
+  /** Colours the arc by status (green / amber / red). */
+  tone?: Tone;
 }
 
 /**
  * The tick-ring dial used across the designs: 270° sweep, minor ticks every 2%, labelled majors
  * every 20%, a cyan arc sweeping up to the value around the metallic knob.
  */
-export function DialGauge({ value, min = 0, max = 100, unit = '', decimals = 0, size = 250, display }: DialGaugeProps) {
+export function DialGauge({ value, min = 0, max = 100, unit = '', decimals = 0, size = 250, display, tone }: DialGaugeProps) {
   const id = useId().replace(/:/g, '');
+  const color = CYAN;
+  const textColor = numberColor(tone);
   const cx = 130;
   const cy = 130;
   const START = -135;
@@ -93,13 +104,13 @@ export function DialGauge({ value, min = 0, max = 100, unit = '', decimals = 0, 
         const major = i % 5 === 0;
         const a = polar(cx, cy, 86, deg);
         const b = polar(cx, cy, major ? 96 : 91, deg);
-        return <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={major ? '#4fdcff' : '#4fc3d4'} strokeWidth={major ? 1.4 : 0.8} strokeLinecap="round" opacity={major ? 0.9 : 0.45} />;
+        return <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={major ? '#9d78ff' : '#b58ce3'} strokeWidth={major ? 1.4 : 0.8} strokeLinecap="round" opacity={major ? 0.9 : 0.45} />;
       })}
       {labels.map((v, i) => {
         const deg = START + (SWEEP * i) / 5;
         const p = polar(cx, cy, 110, deg);
         return (
-          <text key={i} x={p.x} y={p.y} fill="#79a4aa" fontSize={12} textAnchor="middle" dominantBaseline="middle" transform={`rotate(${deg} ${p.x} ${p.y})`}>
+          <text key={i} x={p.x} y={p.y} fill="#b09dc1" fontSize={12} textAnchor="middle" dominantBaseline="middle" transform={`rotate(${deg} ${p.x} ${p.y})`}>
             {fmtLabel(v)}
           </text>
         );
@@ -108,22 +119,22 @@ export function DialGauge({ value, min = 0, max = 100, unit = '', decimals = 0, 
       <Knob cx={cx} cy={cy} id={id} />
 
       {/* track + value arc */}
-      <path d={arcPath(cx, cy, 79, START, START + SWEEP)} fill="none" stroke={CYAN} strokeOpacity={0.12} strokeWidth={5} />
+      <path d={arcPath(cx, cy, 79, START, START + SWEEP)} fill="none" stroke={color} strokeOpacity={0.12} strokeWidth={5} />
       <motion.path
         d={arcPath(cx, cy, 79, START, START + SWEEP)}
         fill="none"
-        stroke={CYAN}
+        stroke={color}
         strokeWidth={5}
         filter={`url(#${id}-glow)`}
         style={{ pathLength: arcLength }}
       />
       {/* needle tip */}
-      <motion.circle r={4} cx={tipX} cy={tipY} fill={CYAN} filter={`url(#${id}-glow)`} />
+      <motion.circle r={4} cx={tipX} cy={tipY} fill={color} filter={`url(#${id}-glow)`} />
 
-      <text x={cx} y={cy - 4} fill="#fff" fontSize={36} textAnchor="middle" dominantBaseline="middle" style={{ fontVariantNumeric: 'tabular-nums' }}>
+      <text x={cx} y={cy - 4} fill={textColor} fontSize={36} textAnchor="middle" dominantBaseline="middle" style={{ fontVariantNumeric: 'tabular-nums' }}>
         {display ?? (value === null ? '—' : <AnimatedNumber value={value} decimals={decimals} />)}
       </text>
-      <text x={cx} y={cy + 26} fill="#79a4aa" fontSize={12} textAnchor="middle" letterSpacing="0.14em">
+      <text x={cx} y={cy + 26} fill="#b09dc1" fontSize={12} textAnchor="middle" letterSpacing="0.14em">
         {unit}
       </text>
     </svg>
@@ -131,8 +142,10 @@ export function DialGauge({ value, min = 0, max = 100, unit = '', decimals = 0, 
 }
 
 /** "Main Kpi" arc (Frame 488 / Electric): a thick cyan horseshoe with a darker remainder. */
-export function ArcGauge({ value, label = 'Main Kpi', decimals = 1, size = 300, suffix = '%' }: { value: number | null; label?: string; decimals?: number; size?: number; suffix?: string }) {
+export function ArcGauge({ value, label = 'Main Kpi', decimals = 1, size = 300, suffix = '%', tone }: { value: number | null; label?: string; decimals?: number; size?: number; suffix?: string; tone?: Tone }) {
   const id = useId().replace(/:/g, '');
+  const color = CYAN;
+  const textColor = numberColor(tone, '#ffffff');
   const cx = 150;
   const cy = 150;
   const frac = value === null ? 0 : clamp(value / 100, 0, 1);
@@ -142,12 +155,12 @@ export function ArcGauge({ value, label = 'Main Kpi', decimals = 1, size = 300, 
     <svg viewBox="0 0 300 210" width={size} height={(size * 210) / 300} style={{ maxHeight: '100%', width: 'auto', height: 'auto' }} role="img" aria-label={`${label} ${value ?? '—'}${suffix}`}>
       <defs>
         <linearGradient id={`${id}-g`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#4fc3d4" />
-          <stop offset="0.52" stopColor="#4fdcff" />
-          <stop offset="1" stopColor="#d9fbff" />
+          <stop offset="0" stopColor="#b58ce3" />
+          <stop offset="0.52" stopColor={color} />
+          <stop offset="1" stopColor="#e4ccff" />
         </linearGradient>
       </defs>
-      <path d={arcPath(cx, cy, 118, START, START + SWEEP)} fill="none" stroke="rgba(113,165,174,0.14)" strokeWidth={24} strokeLinecap="butt" />
+      <path d={arcPath(cx, cy, 118, START, START + SWEEP)} fill="none" stroke="rgba(175,151,195,0.14)" strokeWidth={24} strokeLinecap="butt" />
       <motion.path
         d={arcPath(cx, cy, 118, START, START + SWEEP)}
         fill="none"
@@ -156,13 +169,13 @@ export function ArcGauge({ value, label = 'Main Kpi', decimals = 1, size = 300, 
         initial={{ pathLength: 0 }}
         animate={{ pathLength: Math.max(0.001, frac) }}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        style={{ filter: 'drop-shadow(0 0 8px rgba(79,220,255,0.55))' }}
+        style={{ filter: `drop-shadow(0 0 8px ${color}8c)` }}
       />
-      <text x={cx} y={cy + 8} fill="#effdff" fontSize={50} fontWeight={500} textAnchor="middle" style={{ fontVariantNumeric: 'tabular-nums' }}>
+      <text x={cx} y={cy + 8} fill={textColor} fontSize={50} fontWeight={500} textAnchor="middle" style={{ fontVariantNumeric: 'tabular-nums' }}>
         {value === null ? '—' : <AnimatedNumber value={value} decimals={decimals} />}
         {suffix}
       </text>
-      <text x={cx} y={cy + 42} fill="#79a4aa" fontSize={13} textAnchor="middle" letterSpacing="0.16em" style={{ textTransform: 'uppercase' }}>
+      <text x={cx} y={cy + 42} fill="#b09dc1" fontSize={13} textAnchor="middle" letterSpacing="0.16em" style={{ textTransform: 'uppercase' }}>
         {label}
       </text>
     </svg>
@@ -201,10 +214,10 @@ export function RingGauge({ segments, value, unit, size = 200 }: { segments: { v
           />
         );
       })}
-      <text x={cx} y={cy - 2} fill="#fff" fontSize={34} textAnchor="middle" dominantBaseline="middle">
+      <text x={cx} y={cy - 2} fill="#ffffff" fontSize={34} textAnchor="middle" dominantBaseline="middle">
         {value}
       </text>
-      <text x={cx} y={cy + 24} fill="#79a4aa" fontSize={12} textAnchor="middle" letterSpacing="0.14em">
+      <text x={cx} y={cy + 24} fill="#b09dc1" fontSize={12} textAnchor="middle" letterSpacing="0.14em">
         {unit}
       </text>
     </svg>
@@ -214,16 +227,14 @@ export function RingGauge({ segments, value, unit, size = 200 }: { segments: { v
 /** Knob inside a thick glowing ring holding a count (Ongoing Alarm Count). */
 export function CountRing({ value, alarm, size = 150 }: { value: number; alarm?: boolean; size?: number }) {
   const id = useId().replace(/:/g, '');
-  const color = alarm ? '#ef4444' : CYAN;
+  const color = CYAN;
   return (
     <svg viewBox="0 0 160 160" width={size} height={size}>
       <g transform="translate(-50 -50)">
         <Knob cx={130} cy={130} id={id} scale={0.9} />
       </g>
-      <circle cx={80} cy={80} r={70} fill="none" stroke={color} strokeWidth={7} style={{ filter: `drop-shadow(0 0 8px ${color})` }}>
-        {alarm && <animate attributeName="stroke-opacity" values="1;0.35;1" dur="1s" repeatCount="indefinite" />}
-      </circle>
-      <text x={80} y={82} fill="#fff" fontSize={40} textAnchor="middle" dominantBaseline="middle">
+      <circle cx={80} cy={80} r={70} fill="none" stroke={color} strokeWidth={7} style={{ filter: `drop-shadow(0 0 8px ${color})` }} />
+      <text x={80} y={82} fill={alarm ? TONE_COLOR.bad : '#ffffff'} fontSize={40} textAnchor="middle" dominantBaseline="middle">
         {value}
       </text>
     </svg>

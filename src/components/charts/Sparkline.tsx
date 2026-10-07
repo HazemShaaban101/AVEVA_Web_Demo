@@ -1,5 +1,5 @@
 /** A small line chart of recent values, with optional horizontal reference lines. */
-export function Sparkline({ data, width, height, min, max, color = '#4fc3d4', refs = [] }: { data: number[]; width: number; height: number; min?: number; max?: number; color?: string; refs?: { value: number; color: string; label?: string }[] }) {
+export function Sparkline({ data, width, height, min, max, color = '#b58ce3', refs = [] }: { data: number[]; width: number; height: number; min?: number; max?: number; color?: string; refs?: { value: number; color: string; label?: string }[] }) {
   if (data.length < 2) return <svg width={width} height={height} />;
   const lo = min ?? Math.min(...data);
   const hi = max ?? Math.max(...data);

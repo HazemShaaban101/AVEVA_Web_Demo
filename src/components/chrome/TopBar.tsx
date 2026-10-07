@@ -19,8 +19,9 @@ export function TopBar() {
   // Above the strip under it and the banners, so the notification panel opens over them.
   return (
     <header className="absolute inset-x-0 top-0 z-[45] h-[150px]">
-      <span aria-hidden className="absolute inset-x-[-2000px] top-[-2000px] h-[2141px] border-b" style={{ background: 'linear-gradient(180deg, rgba(40,120,140,0.28), rgba(40,120,140,0.14))', borderColor: 'var(--pf-line)' }} />
-      <div className="absolute left-[52px] top-[46px]">
+      <span aria-hidden className="absolute inset-x-[-2000px] top-[-2000px] h-[2141px] border-b" style={{ background: 'linear-gradient(180deg, rgba(14,10,20,0.78), rgba(6,4,10,0.6))', borderColor: 'var(--pf-line)' }} />
+      {/* Centred in the space between the screen edge and the system navigation (which starts at x = 474). */}
+      <div className="absolute left-0 top-0 flex h-[150px] w-[474px] items-center justify-center">
         <Wordmark />
       </div>
 

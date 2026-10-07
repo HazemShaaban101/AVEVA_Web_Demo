@@ -3,8 +3,13 @@
 A demo of a smart-mall operations platform: one screen for every system on site, plus a 3D view of
 the campus. Clicking a building switches every KPI to that building.
 
-**Everything in this demo is simulated.** It has no backend, no sign-in, and no connection to any
-device, PLC, OPC UA server or AVEVA Galaxy. Values come from deterministic simulators in the browser,
+**Everything in this demo is simulated.** It has no backend and no connection to any device, PLC,
+OPC UA server or AVEVA Galaxy. Its gateway layer (`src/gateway`) is replaced by simulators.
+
+**Sign in** with user name `administrator` and password `000000`. The account is local to the demo
+(`src/gateway/auth.ts`); the session lasts until the tab is closed or you sign out.
+
+Values come from deterministic simulators in the browser,
 so the data moves like live data and is the same on every reload. Writes (for example, switching an
 FCU on the floor plan) are kept in memory until the page is reloaded.
 
@@ -13,7 +18,7 @@ FCU on the floor plan) are kept in memory until the page is reloaded.
 | Vertical | Tabs |
 |---|---|
 | 3D View | Campus render with building hover; click a building to scope the KPIs |
-| Fire | Fire System (with a fire-drill simulation), Fire Detection, Fire Hydrants |
+| Fire | Fire System (building cards, per-building device pages and a fire-drill simulation), Fire Hydrants |
 | Electric | Transformers, MDB, Generators, UPS, single-line diagram (with a utility-failure drill) |
 | Community | Application, Navigation, Crowd Monitoring, Social Media |
 | Metering | Energy, Energy Analytics, Water, BTU, Billing |

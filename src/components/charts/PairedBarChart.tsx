@@ -18,16 +18,24 @@ interface PairedBarChartProps {
   compact?: boolean;
   /** Leave room on the right like the design (bars don't span the full width). */
   fillWidth?: number;
+  /** Bar width in px (defaults by size); lower it for many groups. */
+  barWidth?: number;
+  /** Show every n-th group label. */
+  labelEvery?: number;
+  /** Series colours (default violet / pale). */
+  colors?: { a: string; b: string };
 }
 
-const A = '#4fdcff';
-const B = '#d9fbff';
+const A = '#9d78ff';
+const B = '#e4ccff';
 
 /**
  * Two thin square bars per group (cyan vs pale) with bright caps fading to the axis, as in "Energy Usage
  * Per Building" and "Weekly Consumption". Hovering a group shows both values.
  */
-export function PairedBarChart({ data, names, yTitle, xTitle, unit = '', compact, fillWidth = 1 }: PairedBarChartProps) {
+export function PairedBarChart({ data, names, yTitle, xTitle, unit = '', compact, fillWidth = 1, barWidth, labelEvery = 1, colors }: PairedBarChartProps) {
+  const cA = colors?.a ?? A;
+  const cB = colors?.b ?? B;
   const id = useId().replace(/:/g, '');
   const [ref, { width, height }] = useSize<HTMLDivElement>();
   const [hover, setHover] = useState<number | null>(null);
@@ -41,19 +49,19 @@ export function PairedBarChart({ data, names, yTitle, xTitle, unit = '', compact
   const pow = 10 ** Math.floor(Math.log10(max));
   const top = Math.ceil(max / pow) * pow;
   const slot = plotW / Math.max(1, data.length);
-  const barW = compact ? 7 : 13;
+  const barW = barWidth ?? (compact ? 7 : 13);
   const y = (v: number) => PAD_T + plotH - (v / top) * plotH;
 
   return (
     <div ref={ref} className="relative h-full w-full">
       {yTitle && <span className="absolute left-0 top-[12px] text-[12px] font-bold uppercase tracking-[0.12em] text-ink-3">{yTitle}</span>}
-      <div className={`absolute right-[4px] flex items-center gap-[26px] text-[#79a4aa] ${compact ? 'top-0 text-[11px]' : 'top-[10px] text-[13px]'}`}>
+      <div className={`absolute right-[4px] flex items-center gap-[26px] text-[#b09dc1] ${compact ? 'top-0 text-[11px]' : 'top-[10px] text-[13px]'}`}>
         <span className="flex items-center gap-[7px]">
-          <span className="h-[8px] w-[8px] rounded-full" style={{ background: A, boxShadow: `0 0 8px ${A}` }} />
+          <span className="h-[8px] w-[8px] rounded-full" style={{ background: cA, boxShadow: `0 0 8px ${cA}` }} />
           {names.a}
         </span>
         <span className="flex items-center gap-[7px]">
-          <span className="h-[8px] w-[8px] rounded-full" style={{ background: B, boxShadow: `0 0 8px ${B}` }} />
+          <span className="h-[8px] w-[8px] rounded-full" style={{ background: cB, boxShadow: `0 0 8px ${cB}` }} />
           {names.b}
         </span>
       </div>
@@ -62,24 +70,24 @@ export function PairedBarChart({ data, names, yTitle, xTitle, unit = '', compact
         <svg width={width} height={height} className="absolute inset-0 overflow-visible">
           <defs>
             <linearGradient id={`${id}-a`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor={A} />
-              <stop offset="1" stopColor={A} stopOpacity={0.16} />
+              <stop offset="0" stopColor={cA} />
+              <stop offset="1" stopColor={cA} stopOpacity={0.16} />
             </linearGradient>
             <linearGradient id={`${id}-b`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor={B} />
-              <stop offset="1" stopColor={B} stopOpacity={0.08} />
+              <stop offset="0" stopColor={cB} />
+              <stop offset="1" stopColor={cB} stopOpacity={0.08} />
             </linearGradient>
           </defs>
           {Array.from({ length: 5 }, (_, i) => (top * i) / 4).map((t) => (
             <g key={t}>
-              <line x1={PAD_L} x2={width - 4} y1={y(t)} y2={y(t)} stroke="rgba(79,220,255,0.1)" />
-              <text x={PAD_L - 10} y={y(t)} fill="#6f929a" fontSize={compact ? 9 : 12} textAnchor="end" dominantBaseline="middle">
+              <line x1={PAD_L} x2={width - 4} y1={y(t)} y2={y(t)} stroke="rgba(157,120,255,0.1)" />
+              <text x={PAD_L - 10} y={y(t)} fill="#5f526d" fontSize={compact ? 9 : 12} textAnchor="end" dominantBaseline="middle">
                 {fmt(t)}
               </text>
             </g>
           ))}
-          <line x1={PAD_L} x2={PAD_L} y1={PAD_T - 6} y2={PAD_T + plotH} stroke="rgba(79,220,255,0.16)" />
-          <line x1={PAD_L} x2={width - 4} y1={PAD_T + plotH + 4} y2={PAD_T + plotH + 4} stroke="rgba(79,220,255,0.16)" />
+          <line x1={PAD_L} x2={PAD_L} y1={PAD_T - 6} y2={PAD_T + plotH} stroke="rgba(157,120,255,0.16)" />
+          <line x1={PAD_L} x2={width - 4} y1={PAD_T + plotH + 4} y2={PAD_T + plotH + 4} stroke="rgba(157,120,255,0.16)" />
 
           {data.map((d, i) => {
             const cx = PAD_L + slot * i + slot / 2;
@@ -105,24 +113,26 @@ export function PairedBarChart({ data, names, yTitle, xTitle, unit = '', compact
                       width={barW - 3}
                       height={2}
                       rx={1}
-                      fill="#fff"
+                      fill="#ffffff"
                       initial={{ y: PAD_T + plotH }}
                       animate={{ y: y(v) + 2 }}
                       transition={{ duration: 0.9, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
-                      style={{ filter: `drop-shadow(0 0 4px ${k === 'a' ? A : B})` }}
+                      style={{ filter: `drop-shadow(0 0 4px ${k === 'a' ? cA : cB})` }}
                     />
                   </g>
                 ))}
-                <text x={cx} y={PAD_T + plotH + (compact ? 16 : 22)} fill="#7899a0" fontSize={compact ? 9 : 12} textAnchor="middle">
-                  {d.label}
-                </text>
+                {i % labelEvery === 0 && (
+                  <text x={cx} y={PAD_T + plotH + (compact ? 16 : 22)} fill="#645773" fontSize={compact ? 9 : 12} textAnchor="middle">
+                    {d.label}
+                  </text>
+                )}
                 {hover === i && (
                   <g transform={`translate(${Math.min(cx + 16, width - 170)}, ${Math.max(PAD_T, y(Math.max(d.a, d.b)) - 10)})`} pointerEvents="none">
-                    <rect width={160} height={56} rx={2} fill="rgba(2,18,18,0.94)" stroke="rgba(79,220,255,0.4)" />
-                    <text x={10} y={22} fill={A} fontSize={13}>
+                    <rect width={160} height={56} rx={2} fill="rgba(4,2,5,0.94)" stroke="rgba(157,120,255,0.4)" />
+                    <text x={10} y={22} fill={cA} fontSize={13}>
                       {names.a}: {fmt(d.a)} {unit}
                     </text>
-                    <text x={10} y={42} fill={B} fontSize={13}>
+                    <text x={10} y={42} fill={cB} fontSize={13}>
                       {names.b}: {fmt(d.b)} {unit}
                     </text>
                   </g>
@@ -131,7 +141,7 @@ export function PairedBarChart({ data, names, yTitle, xTitle, unit = '', compact
             );
           })}
           {xTitle && (
-            <text x={width} y={PAD_T + plotH + 32} fill="#79a4aa" fontSize={12} fontWeight={700} letterSpacing="0.1em" textAnchor="end" style={{ textTransform: 'uppercase' }}>
+            <text x={width} y={PAD_T + plotH + 32} fill="#b09dc1" fontSize={12} fontWeight={700} letterSpacing="0.1em" textAnchor="end" style={{ textTransform: 'uppercase' }}>
               {xTitle}
             </text>
           )}

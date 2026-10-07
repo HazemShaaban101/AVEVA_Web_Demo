@@ -48,10 +48,10 @@ export function BillingScreen() {
   const paid = bills.filter((b) => b.status === 'Paid').reduce((a, b) => a + b.amount, 0);
   const overdue = bills.filter((b) => b.status === 'Overdue').reduce((a, b) => a + b.amount, 0);
   const byUtility = [
-    { name: 'Electricity', value: bills.reduce((a, b) => a + b.kwh * TARIFF.kWh, 0), color: '#4fdcff' },
+    { name: 'Electricity', value: bills.reduce((a, b) => a + b.kwh * TARIFF.kWh, 0), color: '#9d78ff' },
     { name: 'Chilled Water', value: bills.reduce((a, b) => a + b.btu * TARIFF.btu, 0), color: '#5b7cff' },
-    { name: 'Water', value: bills.reduce((a, b) => a + b.m3 * TARIFF.m3, 0), color: '#4fc3d4' },
-    { name: 'Service Charge', value: total - bills.reduce((a, b) => a + b.kwh * TARIFF.kWh + b.btu * TARIFF.btu + b.m3 * TARIFF.m3, 0), color: '#4ade6b' },
+    { name: 'Water', value: bills.reduce((a, b) => a + b.m3 * TARIFF.m3, 0), color: '#b58ce3' },
+    { name: 'Service Charge', value: total - bills.reduce((a, b) => a + b.kwh * TARIFF.kWh + b.btu * TARIFF.btu + b.m3 * TARIFF.m3, 0), color: '#7fcf9d' },
   ];
 
   const kpis = row(208, 150, 4);

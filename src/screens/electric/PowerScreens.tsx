@@ -26,14 +26,14 @@ import {
 const num = (v: unknown) => (typeof v === 'number' ? v : 0);
 
 export const GenIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" aria-hidden>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.8" aria-hidden>
     <circle cx="12" cy="12" r="9" />
     <path d="M15.5 9.5A4 4 0 1 0 16 13h-3.5" strokeLinecap="round" />
   </svg>
 );
 
 export const BatteryIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" aria-hidden>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.8" aria-hidden>
     <rect x="3" y="7" width="16" height="10" rx="2" />
     <path d="M21 10.5v3M7 12h6M10 9v6" strokeLinecap="round" />
   </svg>
@@ -69,14 +69,14 @@ export function DrillControl({ compact }: { compact?: boolean }) {
       : 'Utility healthy · both 22 kV incomers live';
   return (
     <div className={compact ? 'flex items-center gap-[14px]' : 'flex h-full flex-col justify-center gap-[14px] px-[22px] pb-[14px]'}>
-      <span className="flex items-center gap-[10px] text-[15px]" style={{ color: mains.failed ? '#f87171' : phase === 'coolDown' ? '#ffc65c' : '#4ade6b' }}>
+      <span className="flex items-center gap-[10px] text-[15px]" style={{ color: mains.failed ? '#e0889b' : phase === 'coolDown' ? '#f0c3ab' : '#bbaacb' }}>
         <span className="h-[9px] w-[9px] rounded-full" style={{ background: 'currentColor', boxShadow: '0 0 10px currentColor', animation: mains.failed ? 'pf-alarm-blink 1s infinite' : undefined }} />
         {status}
       </span>
       <button
         onClick={mains.failed ? restore : fail}
         className="h-[40px] self-start rounded-[8px] border px-[18px] text-[15px] transition-colors"
-        style={mains.failed ? { borderColor: '#4ade6b', color: '#4ade6b', background: 'rgba(74,222,107,0.08)' } : { borderColor: '#ef4444', color: '#fca5a5', background: 'rgba(239,68,68,0.1)' }}
+        style={{ borderColor: 'rgba(157,120,255,0.5)', color: '#e4ccff', background: 'rgba(157,120,255,0.08)' }}
       >
         {mains.failed ? 'Restore utility supply' : 'Simulate utility failure'}
       </button>
@@ -244,7 +244,7 @@ export function UpsScreen() {
                 {hot && <Tag tone="warn">Battery temp high</Tag>}
               </div>
               <div className="flex items-center gap-[16px]">
-                <RingGauge size={132} value={`${fmt(load)}%`} unit="load" segments={[{ value: load, color: load > 80 ? '#ffb020' : '#4fc3d4' }, { value: 100 - load, color: 'rgba(255,255,255,0.08)' }]} />
+                <RingGauge size={132} value={`${fmt(load)}%`} unit="load" segments={[{ value: load, color: load > 80 ? '#e8a98c' : '#b58ce3' }, { value: 100 - load, color: 'rgba(255,255,255,0.08)' }]} />
                 <div className="flex flex-1 flex-col gap-[6px]">
                   <span className="text-[13px] text-ink-3">Battery</span>
                   <span className="text-[32px] leading-none text-white tabular-nums">
@@ -282,7 +282,7 @@ export function UpsScreen() {
               <div key={u.tag} className="flex items-center gap-[14px] text-[13px]">
                 <span className="w-[64px] text-white">{u.label}</span>
                 <div className="relative h-[8px] flex-1 rounded-full bg-white/[0.07]">
-                  <span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${Math.min(100, (rt / scale) * 100)}%`, background: rt < REQUIRED_MIN ? '#ef4444' : '#4fc3d4', transition: 'width .6s' }} />
+                  <span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${Math.min(100, (rt / scale) * 100)}%`, background: rt < REQUIRED_MIN ? '#d96b84' : '#b58ce3', transition: 'width .6s' }} />
                   <span className="absolute -top-[4px] h-[16px] w-[2px] bg-accent" style={{ left: `${(REQUIRED_MIN / scale) * 100}%` }} title={`${REQUIRED_MIN} min required`} />
                 </div>
                 <span className={`w-[64px] text-right tabular-nums ${rt < REQUIRED_MIN ? 'text-alarm-soft' : 'text-ink-2'}`}>{fmt(rt)} min</span>

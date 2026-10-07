@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Capsule, Hairline, StatusPill, Verdict, type PillState, type Tone } from '@/components/controls/Controls';
+import { Capsule, Hairline, StatusPill, TONE_COLOR, Verdict, type PillState, type Tone } from '@/components/controls/Controls';
 import { ArcGauge, BarMeter, CountRing, DialGauge, RingGauge } from '@/components/gauges/Gauges';
 import { AnimatedNumber } from '@/components/gauges/AnimatedNumber';
 import { PairedBarChart, type BarGroup } from '@/components/charts/PairedBarChart';
@@ -16,7 +16,7 @@ import { fmt } from '@/utils/format';
 
 function LiveBadge({ status }: { status?: string }) {
   const text = status === 'live' ? 'LIVE · SIMULATED' : status === 'reconnecting' ? 'RECONNECTING' : status === 'not_found' ? 'NOT IN GALAXY' : 'CONNECTING';
-  const color = status === 'live' ? '#4ade6b' : status === 'reconnecting' || status === 'not_found' ? '#ffb020' : '#4fc3d4';
+  const color = status === 'live' ? '#7fcf9d' : status === 'reconnecting' || status === 'not_found' ? '#e8a98c' : '#b58ce3';
   return (
     <span className="absolute right-[16px] top-[8px] flex items-center gap-[6px] text-[11px] tracking-[1px]" style={{ color }}>
       <span className="h-[6px] w-[6px] rounded-full" style={{ background: color, boxShadow: `0 0 6px ${color}`, animation: status === 'live' ? 'pf-alarm-blink 2s infinite' : undefined }} />
@@ -39,7 +39,7 @@ export function DialVerdict({ source, min = 0, max = 100, decimals = 0, unit, ve
     <div className="flex h-full items-center">
       {v.live && <LiveBadge status={v.status} />}
       <div className="flex h-full w-[48%] items-center justify-center py-[2px]">
-        <DialGauge value={v.value} min={min} max={v.rangeScale === 1 ? max : tidy(max * v.rangeScale)} unit={unit ?? v.unit} decimals={decimals} display={display && v.value !== null ? display(v.value) : undefined} />
+        <DialGauge value={v.value} min={min} max={v.rangeScale === 1 ? max : tidy(max * v.rangeScale)} unit={unit ?? v.unit} decimals={decimals} display={display && v.value !== null ? display(v.value) : undefined} tone={r.tone} />
       </div>
       <Hairline />
       <div className="flex flex-1 justify-center px-[12px]">
@@ -56,7 +56,7 @@ export function DialStacked({ source, min = 0, max = 100, decimals = 0, unit, ve
   return (
     <div className="flex h-full flex-col items-center pb-[24px] pt-[6px]">
       <div className="flex min-h-0 w-full flex-1 items-center justify-center">
-        <DialGauge value={v.value} min={min} max={v.rangeScale === 1 ? max : tidy(max * v.rangeScale)} unit={unit ?? v.unit} decimals={decimals} size={262} />
+        <DialGauge value={v.value} min={min} max={v.rangeScale === 1 ? max : tidy(max * v.rangeScale)} unit={unit ?? v.unit} decimals={decimals} size={262} tone={r.tone} />
       </div>
       <span className="my-[14px] h-px w-[268px] shrink-0 bg-accent/15" />
       <Verdict text={r.text} tone={r.tone} />
@@ -70,7 +70,7 @@ export function ArcStacked({ source, label, decimals = 0, verdict }: { source: S
   return (
     <div className="flex h-full flex-col items-center pb-[24px] pt-[6px]">
       <div className="flex min-h-0 w-full flex-1 items-center justify-center">
-        <ArcGauge value={v.value} label={label} decimals={decimals} size={290} />
+        <ArcGauge value={v.value} label={label} decimals={decimals} size={290} tone={r.tone} />
       </div>
       <span className="my-[14px] h-px w-[268px] shrink-0 bg-accent/15" />
       <Verdict text={r.text} tone={r.tone} />
@@ -84,7 +84,7 @@ export function ArcVerdict({ source, label, unit, decimals = 0, verdict, suffix 
   return (
     <div className="flex h-full items-center">
       <div className="flex w-[64%] justify-center">
-        <ArcGauge value={v.value} label={label ?? unit ?? v.unit} decimals={decimals} size={260} suffix={suffix} />
+        <ArcGauge value={v.value} label={label ?? unit ?? v.unit} decimals={decimals} size={260} suffix={suffix} tone={r.tone} />
       </div>
       <Hairline />
       <div className="flex flex-1 justify-center">
@@ -142,16 +142,18 @@ export function BarsBody({ groups, names, yTitle, xTitle, unit, compact, fillWid
 }
 
 /** Big number + unit, a hairline, and a side note (bottom KPI tiles of the 3D View overlay). */
-export function KpiBody({ source, decimals = 1, unit, note, noteTone = 'aqua', extra }: { source: Source; decimals?: number; unit?: string; note: ReactNode | ((v: number | null, p: number | null) => ReactNode); noteTone?: Tone; extra?: ReactNode }) {
+export function KpiBody({ source, decimals = 1, unit, note, noteTone = 'aqua', extra, tone }: { source: Source; decimals?: number; unit?: string; note: ReactNode | ((v: number | null, p: number | null) => ReactNode); noteTone?: Tone; extra?: ReactNode; /** Colours the number by status (green / amber / red). */ tone?: Tone | ((v: number | null) => Tone) }) {
   const v = useSource(source);
+  const t = typeof tone === 'function' ? tone(v.value) : tone;
+  const color = t === 'warn' || t === 'bad' ? TONE_COLOR[t] : '#ffffff';
   return (
     <div className="flex h-full items-center px-[18px] pb-[10px]">
-      <span className="font-medium leading-none text-[#6fe3ff]" style={{ fontSize: 54, letterSpacing: '-0.02em' }}>
+      <span className="font-medium leading-none" style={{ fontSize: 54, letterSpacing: '-0.02em', color, }}>
         {v.value === null ? '—' : <AnimatedNumber value={v.value} decimals={decimals} />}
       </span>
       <span className="ml-[6px] self-end pb-[6px] text-[20px] font-medium text-ink-3">{unit ?? v.unit}</span>
       <span className="mx-[22px] h-[64px] w-px" style={{ background: 'var(--pf-line-soft)' }} />
-      <span className="text-[17px]" style={{ color: noteTone === 'aqua' ? '#8fb4ba' : undefined }}>
+      <span className="text-[17px]" style={{ color: noteTone === 'aqua' ? '#bbaacb' : undefined }}>
         {typeof note === 'function' ? note(v.value, v.predictive) : note}
       </span>
       {extra && <span className="ml-auto">{extra}</span>}
@@ -174,7 +176,7 @@ function KeyValueRow({ label, source, text, decimals = 0, unit }: { label: strin
   const v = useSource(source ?? { fixed: 0 });
   return (
     <div className="flex items-baseline justify-between">
-      <dt className="text-[#b4d3d8]">{label}</dt>
+      <dt className="text-[#d0c0df]">{label}</dt>
       <dd className="tabular-nums text-white">{text ?? `${fmt(v.value, decimals)}${unit ?? v.unit ? ` ${unit ?? v.unit}` : ''}`}</dd>
     </div>
   );

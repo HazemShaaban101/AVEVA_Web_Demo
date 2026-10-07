@@ -1,10 +1,12 @@
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import siteMap from '@/assets/renders/site-map.webp';
+import aerial from '@/assets/renders/aerial.webp';
 
-/** Map image coordinates (the site-map render is 2400×1191). Overlays use these units. */
+/** Map image coordinates (the aerial is 2400×1191). Overlays use these units, before OVERLAY scales them onto the campus. */
 export const MAP_W = 2400;
 export const MAP_H = 1191;
+
+const OVERLAY = { s: 0.75, tx: 334, ty: 251 };
 
 /**
  * The top-view site map in the platform's cyan-rimmed pill frame (as on Fire Detection), with an SVG
@@ -19,10 +21,11 @@ export function SiteMap({ frame, children, radius = 16, dim = 0.15 }: { frame: {
       className="absolute overflow-hidden"
       style={{ left: frame.x, top: frame.y, width: frame.w, height: frame.h, borderRadius: radius }}
     >
-      <img src={siteMap} alt="Site map" draggable={false} className="absolute inset-0 h-full w-full object-cover" />
-      <div className="absolute inset-0" style={{ background: `rgba(1,7,7,${dim})`, boxShadow: 'inset 0 0 60px rgba(1,7,7,0.85)' }} />
+      <img src={aerial} alt="Site aerial view" draggable={false} className="absolute inset-0 h-full w-full object-cover" />
+      <div className="absolute inset-0" style={{ background: `rgba(1,7,7,${dim})`, boxShadow: 'inset 0 0 60px rgba(2,1,2,0.85)' }} />
       <svg className="absolute inset-0 h-full w-full" viewBox={`0 0 ${MAP_W} ${MAP_H}`} preserveAspectRatio="xMidYMid slice">
-        {children}
+        {/* Overlay positions are in the old map's units: scaled and moved onto the campus of the aerial. */}
+        <g transform={`translate(${OVERLAY.tx} ${OVERLAY.ty}) scale(${OVERLAY.s})`}>{children}</g>
       </svg>
       <div className="pointer-events-none absolute inset-0 border border-accent/60" style={{ borderRadius: radius }} />
     </motion.div>

@@ -16,7 +16,6 @@ const maintenance = () => import('@/screens/maintenance/MaintenanceScreens');
 /** Screen for each `${system}/${subsystem}` route. */
 export const SCREENS: Record<string, Screen> = {
   'fire/system': lazy(() => import('@/screens/fire/FireSystemScreen')),
-  'fire/detection': lazy(() => import('@/screens/fire/FireDetectionScreen')),
   'fire/hydrants': lazy(() => import('@/screens/fire/FireHydrantsScreen').then((m) => ({ default: m.FireHydrantsScreen }))),
   'electric/transformers': named(electric, 'TransformersScreen'),
   'electric/mdb': named(electric, 'MdbScreen'),

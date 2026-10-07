@@ -5,6 +5,7 @@ import { TopBar } from '@/components/chrome/TopBar';
 import { SubsystemTabs } from '@/components/frame/SubsystemTabs';
 import { AlertBanner } from '@/components/chrome/AlertBanner';
 import { ConnectionBanner } from '@/components/chrome/ConnectionBanner';
+import { IntrusionAlert } from '@/components/chrome/IntrusionAlert';
 import { ScopeBar } from '@/components/chrome/ScopeBar';
 import { PageTitle } from '@/components/chrome/PageTitle';
 import { useScopeStore } from '@/sim/scope';
@@ -50,6 +51,7 @@ export function SystemLayout() {
       <ScopeBar />
       {sys && sys.subsystems.length > 0 && <SubsystemTabs system={sys} />}
       <AlertBanner />
+      <IntrusionAlert />
       <ConnectionBanner />
     </>
   );

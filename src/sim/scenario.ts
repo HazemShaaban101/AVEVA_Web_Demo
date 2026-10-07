@@ -36,6 +36,21 @@ export interface MainsState {
   restoredAt: number | null;
 }
 
+/**
+ * Forced-door drill (Security): a door is forced open, the nearest CCTV camera pops up and captures
+ * the intruder's face, and the face is matched against the badge/face database.
+ */
+export interface IntrusionState {
+  active: boolean;
+  door: string;
+  /** Building id (model/site.ts) the door belongs to. */
+  building: string;
+  camera: string;
+  at: number | null;
+  /** Who the face matched, or null when the person is unknown. */
+  identity: { name: string; id: string; role: string } | null;
+}
+
 export interface FcuState {
   on: boolean;
   fan: 1 | 2 | 3;
@@ -46,6 +61,7 @@ export interface FcuState {
 interface ScenarioStore {
   fire: FireAlarmState;
   mains: MainsState;
+  intrusion: IntrusionState;
   notifications: PlatformNotification[];
   fcus: Record<string, FcuState>;
   dampers: Record<string, boolean>;
@@ -54,6 +70,8 @@ interface ScenarioStore {
   resolveFireAlarm: () => void;
   failMains: () => void;
   restoreMains: () => void;
+  triggerIntrusion: (known: boolean) => void;
+  clearIntrusion: () => void;
   notify: (n: Omit<PlatformNotification, 'id' | 'time' | 'read'>) => void;
   markAllRead: () => void;
   dismiss: (id: string) => void;
@@ -102,12 +120,13 @@ export const useScenario = create<ScenarioStore>((set, get) => ({
       system: 'Maintenance',
       severity: 'info',
       title: 'Work order closed',
-      detail: 'WO-2291 Escalator E-04 handrail inspection completed.',
+      detail: 'WO-2291 Cooling tower CT-02 fan inspection completed.',
       route: '/maintenance/ticketing',
       read: true,
     },
   ],
   mains: { failed: false, failedAt: null, restoredAt: null },
+  intrusion: { active: false, door: '', building: '', camera: '', at: null, identity: null },
   fcus: {},
   dampers: {},
 
@@ -122,7 +141,7 @@ export const useScenario = create<ScenarioStore>((set, get) => ({
       severity: 'critical',
       title: 'Fire alarm — Zone 1',
       detail: 'Smoke detected by 3 detectors in Zone 1 (east blocks). Fire pumps started automatically.',
-      route: '/fire/detection',
+      route: '/fire/system',
     });
   },
 
@@ -148,6 +167,25 @@ export const useScenario = create<ScenarioStore>((set, get) => ({
     if (!get().mains.failed) return;
     set((s) => ({ mains: { ...s.mains, failed: false, restoredAt: Date.now() } }));
     get().notify({ system: 'Electric', severity: 'info', title: 'Utility supply restored', detail: 'Essential board back on mains. Generators unloaded and cooling down.', route: '/electric/generators' });
+  },
+
+  triggerIntrusion: (known) => {
+    if (get().intrusion.active) return;
+    const identity = known ? { name: 'Mahmoud Adel', id: 'EMP-10431', role: 'Facilities contractor · badge not valid for this door' } : null;
+    set({ intrusion: { active: true, door: 'B01 Loading Dock', building: 'b01', camera: 'CAM-06', at: Date.now(), identity } });
+    get().notify({
+      system: 'Security',
+      severity: 'critical',
+      title: 'Door forced — B01 Loading Dock',
+      detail: identity ? `CCTV captured the face: ${identity.name} (${identity.id}), badge not valid for this door.` : 'CCTV captured the face: no match in the badge or face database.',
+      route: '/security/access',
+    });
+  },
+
+  clearIntrusion: () => {
+    if (!get().intrusion.active) return;
+    set((s) => ({ intrusion: { ...s.intrusion, active: false } }));
+    get().notify({ system: 'Security', severity: 'info', title: 'Door alarm acknowledged', detail: 'B01 Loading Dock secured; security officer dispatched.', route: '/security/access' });
   },
 
   notify: (n) => set((s) => ({ notifications: [{ ...n, id: nid(), time: Date.now(), read: false }, ...s.notifications].slice(0, 50) })),

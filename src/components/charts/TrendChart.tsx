@@ -24,9 +24,9 @@ interface TrendChartProps {
   yMin?: number;
 }
 
-const ACTUAL = '#4fdcff';
-const PRED = '#4fc3d4';
-const PRED_LINE = '#4ade6b';
+const ACTUAL = '#9d78ff';
+const PRED = '#b58ce3';
+const PRED_LINE = '#7fcf9d';
 
 /** A top that splits into 4 round steps (1, 1.5, 2, 2.5, 3, 4, 5, 6 or 8 × 10ⁿ), so every tick label is exact. */
 function niceTop(v: number) {
@@ -94,15 +94,15 @@ export function TrendChart({ data, yTitle, xTitle = 'Time (hrs)', unit = '', dec
   return (
     <div ref={ref} className="relative h-full w-full">
       <span className="absolute left-0 top-[12px] text-[12px] font-bold uppercase tracking-[0.12em] text-ink-3">{yTitle}</span>
-      <div className="absolute right-[4px] top-[10px] flex items-center gap-[22px] text-[13px] text-[#79a4aa]">
+      <div className="absolute right-[4px] top-[10px] flex items-center gap-[22px] text-[13px] text-[#b09dc1]">
         {showPredictive && (
           <span className="flex items-center gap-[8px]">
-            <span className="h-[8px] w-[8px] rounded-full bg-[#4ade6b]" />
+            <span className="h-[8px] w-[8px] rounded-full bg-[#7fcf9d]" />
             {names.predictive}
           </span>
         )}
         <span className="flex items-center gap-[8px]">
-          <span className="h-[8px] w-[8px] rounded-full bg-accent" style={{ boxShadow: '0 0 8px #4fdcff' }} />
+          <span className="h-[8px] w-[8px] rounded-full bg-accent" style={{ boxShadow: '0 0 8px #9d78ff' }} />
           {names.actual}
         </span>
       </div>
@@ -133,14 +133,14 @@ export function TrendChart({ data, yTitle, xTitle = 'Time (hrs)', unit = '', dec
 
           {ticks.map((t) => (
             <g key={t}>
-              <line x1={PAD_L} x2={PAD_L + plotW + 44} y1={y(t)} y2={y(t)} stroke="rgba(98,178,188,0.11)" />
-              <text x={PAD_L - 12} y={y(t)} fill="#7899a0" fontSize={12} textAnchor="end" dominantBaseline="middle">
+              <line x1={PAD_L} x2={PAD_L + plotW + 44} y1={y(t)} y2={y(t)} stroke="rgba(171,140,206,0.11)" />
+              <text x={PAD_L - 12} y={y(t)} fill="#645773" fontSize={12} textAnchor="end" dominantBaseline="middle">
                 {fmt(t, Number.isInteger(Math.round(t * 1e6) / 1e6) ? 0 : tickDecimals)}
               </text>
             </g>
           ))}
-          <line x1={PAD_L} x2={PAD_L} y1={PAD_T - 8} y2={PAD_T + plotH} stroke="rgba(79,220,255,0.16)" />
-          <line x1={PAD_L} x2={PAD_L + plotW + 44} y1={PAD_T + plotH + 8} y2={PAD_T + plotH + 8} stroke="rgba(79,220,255,0.16)" />
+          <line x1={PAD_L} x2={PAD_L} y1={PAD_T - 8} y2={PAD_T + plotH} stroke="rgba(157,120,255,0.16)" />
+          <line x1={PAD_L} x2={PAD_L + plotW + 44} y1={PAD_T + plotH + 8} y2={PAD_T + plotH + 8} stroke="rgba(157,120,255,0.16)" />
 
           {showPredictive && <motion.path d={area('predictive')} fill={`url(#${id}-p)`} initial={{ opacity: 0 }} animate={{ opacity: 1, d: area('predictive') }} transition={{ duration: 0.8 }} />}
           <motion.path d={area('actual')} fill={`url(#${id}-a)`} initial={{ opacity: 0 }} animate={{ opacity: 1, d: area('actual') }} transition={{ duration: 0.8 }} />
@@ -165,28 +165,28 @@ export function TrendChart({ data, yTitle, xTitle = 'Time (hrs)', unit = '', dec
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1, d: line('actual') }}
             transition={{ pathLength: { duration: 1.4, ease: 'easeInOut', delay: 0.15 }, d: { duration: 0.6 } }}
-            style={{ filter: 'drop-shadow(0 0 5px rgba(79,220,255,0.7))' }}
+            style={{ filter: 'drop-shadow(0 0 5px rgba(157,120,255,0.7))' }}
           />
 
           {data.map((d, i) => (
             <g key={i}>
               {showPredictive && d.predictive !== null && d.predictive !== undefined && (
-                <motion.circle r={0} cx={x(i)} cy={y(d.predictive)} initial={{ r: 0 }} animate={{ r: hover === i ? 4.5 : 0, cx: x(i), cy: y(d.predictive) }} fill="#4ade6b" stroke="#051f27" strokeWidth={1.5} />
+                <motion.circle r={0} cx={x(i)} cy={y(d.predictive)} initial={{ r: 0 }} animate={{ r: hover === i ? 4.5 : 0, cx: x(i), cy: y(d.predictive) }} fill="#7fcf9d" stroke="#09050c" strokeWidth={1.5} />
               )}
               {d.actual !== null && (
-                <motion.circle r={0} cx={x(i)} cy={y(d.actual)} initial={{ r: 0 }} animate={{ r: hover === i ? 5 : 0, cx: x(i), cy: y(d.actual) }} fill="#effdff" stroke={ACTUAL} strokeWidth={2} />
+                <motion.circle r={0} cx={x(i)} cy={y(d.actual)} initial={{ r: 0 }} animate={{ r: hover === i ? 5 : 0, cx: x(i), cy: y(d.actual) }} fill="#e4ccff" stroke={ACTUAL} strokeWidth={2} />
               )}
             </g>
           ))}
 
           {data.map((d, i) =>
             i % every === 0 ? (
-              <text key={d.label + i} x={x(i)} y={PAD_T + plotH + 28} fill="#7899a0" fontSize={12} textAnchor="middle">
+              <text key={d.label + i} x={x(i)} y={PAD_T + plotH + 28} fill="#645773" fontSize={12} textAnchor="middle">
                 {d.label}
               </text>
             ) : null,
           )}
-          <text x={width} y={PAD_T + plotH + 29} fill="#79a4aa" fontSize={12} fontWeight={700} letterSpacing="0.1em" textAnchor="end" style={{ textTransform: 'uppercase' }}>
+          <text x={width} y={PAD_T + plotH + 29} fill="#b09dc1" fontSize={12} fontWeight={700} letterSpacing="0.1em" textAnchor="end" style={{ textTransform: 'uppercase' }}>
             {xTitle}
           </text>
 
@@ -194,8 +194,8 @@ export function TrendChart({ data, yTitle, xTitle = 'Time (hrs)', unit = '', dec
             <g pointerEvents="none">
               <line x1={x(hover)} x2={x(hover)} y1={PAD_T} y2={PAD_T + plotH} stroke="rgba(255,255,255,0.3)" strokeDasharray="3 4" />
               <g transform={`translate(${Math.min(x(hover) + 12, width - 200)}, ${PAD_T + 6})`}>
-                <rect width={188} height={showPredictive ? 74 : 52} rx={2} fill="rgba(2,18,18,0.94)" stroke="rgba(79,220,255,0.4)" />
-                <text x={12} y={20} fill="#fff" fontSize={13}>
+                <rect width={188} height={showPredictive ? 74 : 52} rx={2} fill="rgba(4,2,5,0.94)" stroke="rgba(157,120,255,0.4)" />
+                <text x={12} y={20} fill="#ffffff" fontSize={13}>
                   {data[hover].label}
                 </text>
                 <text x={12} y={42} fill={ACTUAL} fontSize={14}>

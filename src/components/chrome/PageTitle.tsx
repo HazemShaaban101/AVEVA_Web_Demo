@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { SYSTEMS, systemById, systemPath } from '@/model/navigation';
+import { buildingById } from '@/model/site';
 
 /**
  * The strip under the header (design: page title with back button and breadcrumb): where the
@@ -10,11 +11,12 @@ import { SYSTEMS, systemById, systemPath } from '@/model/navigation';
 export function PageTitle() {
   const { pathname } = useLocation();
   if (pathname.startsWith('/site/')) return null;
-  const [sysId, subId] = pathname.split('/').filter(Boolean);
+  const [sysId, subId, itemId] = pathname.split('/').filter(Boolean);
+  const item = itemId ? buildingById(itemId) : undefined;
   const sys = systemById(sysId) ?? SYSTEMS[0];
   const sub = sys.subsystems.find((x) => x.id === subId);
   const home = pathname === '/';
-  const trail = home ? [] : [{ label: 'Home', to: '/' }, ...(sub ? [{ label: sys.label, to: systemPath(sys) }] : [])];
+  const trail = home ? [] : [{ label: 'Home', to: '/' }, ...(sub ? [{ label: sys.label, to: systemPath(sys) }] : []), ...(item && sub ? [{ label: sub.label, to: `/${sys.id}/${sub.id}` }] : [])];
 
   return (
     <div className="absolute left-[52px] top-[156px] z-30 flex h-[38px] items-center gap-[14px]">
@@ -39,8 +41,8 @@ export function PageTitle() {
             <span className="text-[15px] text-ink-4">/</span>
           </Fragment>
         ))}
-        <span className="text-[24px] font-medium leading-none text-white" aria-current="page" style={{ textShadow: '0 0 18px rgba(79,220,255,0.25)' }}>
-          {sub?.label ?? sys.label}
+        <span className="text-[24px] font-medium leading-none text-white" aria-current="page" style={{ textShadow: '0 0 18px rgba(157,120,255,0.25)' }}>
+          {item ? `Building ${item.label}` : (sub?.label ?? sys.label)}
         </span>
       </nav>
     </div>

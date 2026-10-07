@@ -48,7 +48,6 @@ export const SYSTEMS: SystemDef[] = [
     glyph: 'fire',
     subsystems: [
       { id: 'system', label: 'Fire System' },
-      { id: 'detection', label: 'Fire Detection' },
       { id: 'hydrants', label: 'Fire Hydrants' },
     ],
   },
@@ -103,7 +102,7 @@ export const SYSTEMS: SystemDef[] = [
     label: 'Plumbing',
     glyph: 'wrench',
     subsystems: [
-      { id: 'domestic', label: 'Domestic Irrigation' },
+      { id: 'domestic', label: 'Domestic / Irrigation' },
       { id: 'pumps', label: 'Pumps' },
       { id: 'valves', label: 'Valve Chambers' },
       { id: 'sld', label: 'SLD' },

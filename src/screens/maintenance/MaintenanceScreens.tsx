@@ -18,13 +18,12 @@ import { rand01, hashString } from '@/sim/noise';
 type Priority = 'Critical' | 'High' | 'Medium' | 'Low';
 const PRIORITY_TONE: Record<Priority, TagTone> = { Critical: 'bad', High: 'warn', Medium: 'info', Low: 'idle' };
 const TICKET_TITLES = [
-  ['Escalator E-04 handrail noise', 'Mechanical'],
+  ['Cooling tower CT-02 fan bearing noise', 'Mechanical'],
   ['FCU-03 not cooling · A02 GF', 'HVAC'],
   ['Lighting circuit trip · B01 L2', 'Electrical'],
   ['Water leak under sink · C01 washroom', 'Plumbing'],
   ['Door A02 Staff Entrance not latching', 'Access'],
   ['Camera CAM-09 offline', 'Security'],
-  ['Kiosk K6 printer paper low', 'IT'],
   ['Booster pump 2 vibration high', 'Mechanical'],
   ['Emergency light test failed · A03', 'Electrical'],
   ['Filter replacement due · AHU-03', 'HVAC'],
@@ -52,6 +51,18 @@ function ticketState(t: number, now: number, p: Priority, key: string): [string,
   if (age < sla * (0.3 + r * 0.9)) return ['In Progress', 'warn'];
   if (r < 0.18 && age > sla) return ['Overdue', 'bad'];
   return ['Resolved', 'good'];
+}
+
+/** Open / overdue / closed counts of the work-order stream, for the 3D View's ticketing KPI. */
+export function useTicketSummary() {
+  const now = useNow(10_000);
+  const tickets = useEventStream(TICKETS, 40, 3 * 86_400_000);
+  const states = tickets.map((e) => ticketState(e.t, now, e.data.priority, e.key)[0]);
+  return {
+    open: states.filter((s) => s === 'New' || s === 'In Progress').length,
+    overdue: states.filter((s) => s === 'Overdue').length,
+    closed: states.filter((s) => s === 'Resolved').length,
+  };
 }
 
 export function TicketingScreen() {
@@ -186,8 +197,8 @@ export const ASSET_SCREENS: Record<string, AssetScreenConfig> = {
   mechanical: {
     key: 'mechanical',
     title: 'Mechanical Assets',
-    icon: <Glyph id="gear" size={20} color="#fff" />,
-    assets: { prefix: 'MEC', names: ['Escalator', 'Passenger Lift', 'Chiller', 'Cooling Tower', 'AHU', 'Exhaust Fan', 'Fire Shutter', 'Travelator'], locations: LOCS, count: 24 },
+    icon: <Glyph id="gear" size={20} color="#ffffff" />,
+    assets: { prefix: 'MEC', names: ['Chiller', 'Cooling Tower', 'AHU', 'Exhaust Fan', 'Fire Shutter', 'Heat Exchanger', 'Air Compressor', 'Smoke Extract Fan'], locations: LOCS, count: 24 },
   },
   electrical: {
     key: 'electrical',
@@ -198,7 +209,7 @@ export const ASSET_SCREENS: Record<string, AssetScreenConfig> = {
   pumps: {
     key: 'pumps',
     title: 'Pump Assets',
-    icon: <Glyph id="wrench" size={20} color="#fff" />,
+    icon: <Glyph id="wrench" size={20} color="#ffffff" />,
     assets: { prefix: 'PMP', names: ['Booster Pump', 'Chilled Water Pump', 'Condenser Pump', 'Fire Jockey Pump', 'Sump Pump', 'Irrigation Pump', 'Hot Water Pump'], locations: LOCS, count: 18 },
   },
   sensors: {
@@ -206,7 +217,7 @@ export const ASSET_SCREENS: Record<string, AssetScreenConfig> = {
     title: 'Sensors',
     icon: <SensorIcon />,
     sensors: true,
-    assets: { prefix: 'SNS', names: ['Temp/RH Sensor', 'CO₂ Sensor', 'People Counter', 'Leak Detector', 'Occupancy Sensor', 'Vibration Sensor', 'Energy Meter'], locations: LOCS, count: 30 },
+    assets: { prefix: 'SNS', names: ['Temp/RH Sensor', 'CO₂ Sensor', 'People Counter', 'Leak Detector', 'Occupancy Sensor', 'Vibration Sensor', 'Motion Sensor'], locations: LOCS, count: 30 },
   },
 };
 
@@ -262,7 +273,7 @@ export function AssetHealthScreen({ config }: { config: AssetScreenConfig }) {
       <Panel frame={ring} index={5} icon={config.icon} title={s ? 'Fleet Status' : 'Condition'} subtitle="Distribution">
         <div className="flex h-full items-center pb-[8px]">
           <div className="flex w-[50%] justify-center">
-            <RingGauge value={`${Math.round((good / assets.length) * 100)}%`} unit={s ? 'online' : 'healthy'} size={180} segments={[{ value: good, color: '#4ade6b' }, { value: warn, color: '#4fdcff' }, { value: bad, color: '#ef4444' }]} />
+            <RingGauge value={`${Math.round((good / assets.length) * 100)}%`} unit={s ? 'online' : 'healthy'} size={180} segments={[{ value: good, color: '#7fcf9d' }, { value: warn, color: '#9d78ff' }, { value: bad, color: '#d96b84' }]} />
           </div>
           <div className="flex flex-col gap-[12px]">
             <Tag tone="good">{s ? 'Online' : 'Healthy'} · {good}</Tag>

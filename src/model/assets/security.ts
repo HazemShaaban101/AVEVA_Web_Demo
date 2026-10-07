@@ -59,10 +59,10 @@ export function parkingEnfValues(tally: Record<string, number>, open: number, fi
 export type AccessChannel = 'QR code' | 'Visitor pass' | 'Employee card' | 'Tenant card' | 'Contractor permit' | 'Face ID';
 
 export const ACCESS_CHANNELS: { id: AccessChannel; attr: string; desc: string; color: string; weight: number }[] = [
-  { id: 'QR code', attr: 'QR_Code_Today', desc: 'Mall app or e-invite at the turnstile readers', color: '#4fdcff', weight: 0.24 },
-  { id: 'Visitor pass', attr: 'Visitor_Pass_Today', desc: 'Temporary card issued at reception', color: '#a78bfa', weight: 0.1 },
-  { id: 'Employee card', attr: 'Employee_Card_Today', desc: 'Mall management and FM staff', color: '#4ade6b', weight: 0.18 },
-  { id: 'Tenant card', attr: 'Tenant_Card_Today', desc: 'Shop and office tenants’ staff', color: '#ffb020', weight: 0.32 },
+  { id: 'QR code', attr: 'QR_Code_Today', desc: 'Mall app or e-invite at the turnstile readers', color: '#9d78ff', weight: 0.24 },
+  { id: 'Visitor pass', attr: 'Visitor_Pass_Today', desc: 'Temporary card issued at reception', color: '#b376f9', weight: 0.1 },
+  { id: 'Employee card', attr: 'Employee_Card_Today', desc: 'Mall management and FM staff', color: '#7fcf9d', weight: 0.18 },
+  { id: 'Tenant card', attr: 'Tenant_Card_Today', desc: 'Shop and office tenants’ staff', color: '#e8a98c', weight: 0.32 },
   { id: 'Contractor permit', attr: 'Contractor_Today', desc: 'Permit-to-work card, time-limited', color: '#f472b6', weight: 0.07 },
   { id: 'Face ID', attr: 'Face_ID_Today', desc: 'Enrolled staff at the lobby readers', color: '#a3e635', weight: 0.09 },
 ];

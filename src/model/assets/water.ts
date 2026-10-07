@@ -180,12 +180,13 @@ export const ZONES = [
   'South verge',
 ].map((name, i) => ({ tag: `IRR_Z${i + 1}`, label: `Z${i + 1}`, name }));
 
-const WINDOWS = [5, 18.5];
 const ZONE_MIN = 20;
 
+/** Demo: the zone program rotates around the clock (20 min per zone), so one zone is always watering. */
+const slotOf = (t: number) => Math.floor((hourOf(t) * 60) / ZONE_MIN);
+
 function zoneOpen(i: number, t: number) {
-  const h = hourOf(t);
-  return WINDOWS.some((w) => h >= w + (i * ZONE_MIN) / 60 && h < w + ((i + 1) * ZONE_MIN) / 60);
+  return slotOf(t) % ZONES.length === i;
 }
 
 export function irrigationFlow(t: number) {
@@ -195,11 +196,16 @@ export function irrigationFlow(t: number) {
 export function zoneValues(i: number, now: number): AttrValues {
   const open = zoneOpen(i, now);
   const h = hourOf(now);
-  const starts = WINDOWS.map((w) => w + (i * ZONE_MIN) / 60);
-  const next = starts.find((s) => s > h) ?? starts[0];
-  const hh = Math.floor(next);
-  const mm = Math.round((next - hh) * 60);
-  const sinceWatered = Math.min(...starts.map((s) => (h - s + 24) % 24));
+  const slot = slotOf(now);
+  const n = ZONES.length;
+  // Next slot (after this one) that belongs to zone i, wrapping past midnight.
+  let nextSlot = slot + 1;
+  while (nextSlot % n !== i) nextSlot++;
+  const nextMin = (nextSlot * ZONE_MIN) % 1440;
+  const hh = Math.floor(nextMin / 60);
+  const mm = nextMin % 60;
+  const lastStart = slot - ((slot - i) % n + n) % n;
+  const sinceWatered = Math.max(0, h - (lastStart * ZONE_MIN) / 60);
   return {
     Valve_Open: open,
     Flow_m3h: open ? irrigationFlow(now) : 0,

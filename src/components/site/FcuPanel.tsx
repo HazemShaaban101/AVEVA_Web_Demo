@@ -27,15 +27,15 @@ export function FcuPanel({ planId, label, floor, markerIndex, onClose }: { planI
 
 /* ---- Shared look ------------------------------------------------------------------------------ */
 
-const pill = 'rounded-[8px] border border-[#4fc3d4] px-[8px] py-[3px] text-[12px] text-[#2f8f9e] disabled:opacity-50';
+const pill = 'rounded-[8px] border border-[#b58ce3] px-[8px] py-[3px] text-[12px] text-[#482a6a] disabled:opacity-50';
 const col = 'flex flex-col items-center gap-[6px]';
-const lbl = 'text-[10px] font-semibold tracking-[0.5px] text-[#5f8389]';
+const lbl = 'text-[10px] font-semibold tracking-[0.5px] text-[#534760]';
 
-function Dots({ n, active, color = '#56c8f5' }: { n: number; active: number; color?: string }) {
+function Dots({ n, active, color = '#b378f8' }: { n: number; active: number; color?: string }) {
   return (
     <span className="flex gap-[3px]">
       {Array.from({ length: n }, (_, i) => (
-        <span key={i} className="h-[4px] w-[14px] rounded-full" style={{ background: i < active ? color : '#d9f3f6' }} />
+        <span key={i} className="h-[4px] w-[14px] rounded-full" style={{ background: i < active ? color : '#e4d6f5' }} />
       ))}
     </span>
   );
@@ -45,13 +45,13 @@ function Frame({ label, badge, onClose, children, footer }: { label: string; bad
   return (
     <motion.div initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }} className="absolute right-[15px] top-[372px] z-10 w-[360px] font-[family-name:var(--font-plain)]">
       <div className="flex items-end">
-        <span className="rounded-t-[8px] bg-[#2f8f9e] px-[12px] py-[6px] text-[16px] text-white">{label}</span>
+        <span className="rounded-t-[8px] bg-[#482a6a] px-[12px] py-[6px] text-[16px] text-white">{label}</span>
         <span className="ml-[8px] pb-[4px] text-[11px] tracking-[0.5px]">{badge}</span>
         <button onClick={onClose} className="ml-auto pb-[2px] pr-[4px] text-[20px] leading-none text-white/70 hover:text-white" aria-label="Close">
           ×
         </button>
       </div>
-      <div className="rounded-b-[8px] rounded-tr-[8px] bg-white px-[12px] py-[10px] text-[#0d3438] shadow-[0_14px_40px_rgba(0,0,0,0.45)]">
+      <div className="rounded-b-[8px] rounded-tr-[8px] bg-white px-[12px] py-[10px] text-[#07050a] shadow-[0_14px_40px_rgba(0,0,0,0.45)]">
         <div className="flex items-start justify-between">{children}</div>
         {footer}
       </div>
@@ -65,7 +65,7 @@ function PowerButton({ on, onClick, disabled }: { on: boolean; onClick?: () => v
       onClick={onClick}
       disabled={disabled}
       className="flex h-[28px] w-[28px] items-center justify-center rounded-[8px] border disabled:opacity-50"
-      style={{ borderColor: on ? '#56c8f5' : '#4fc3d4', color: on ? '#1aa5dc' : '#4fc3d4', boxShadow: on ? '0 0 8px #56c8f588' : undefined }}
+      style={{ borderColor: on ? '#9d78ff' : 'rgba(157,120,255,0.3)', color: on ? '#e4ccff' : '#8a7a9a', background: on ? 'rgba(157,120,255,0.18)' : 'transparent' }}
       aria-label={on ? 'Switch off' : 'Switch on'}
     >
       <PowerIcon size={15} />
@@ -88,10 +88,10 @@ function SetPoint({ value, onStep, disabled, sp }: { value: string; onStep?: (d:
       </div>
       {onStep && (
         <div className="flex flex-col gap-[3px] pt-[14px]">
-          <button onClick={() => onStep(0.5)} disabled={disabled || (sp != null && sp >= SP_MAX)} className="rounded-[4px] border border-[#4fc3d4] text-[#2f8f9e] disabled:opacity-40" aria-label="Raise set point">
+          <button onClick={() => onStep(0.5)} disabled={disabled || (sp != null && sp >= SP_MAX)} className="rounded-[4px] border border-[#b58ce3] text-[#482a6a] disabled:opacity-40" aria-label="Raise set point">
             <ChevronUp size={14} />
           </button>
-          <button onClick={() => onStep(-0.5)} disabled={disabled || (sp != null && sp <= SP_MIN)} className="rounded-[4px] border border-[#4fc3d4] text-[#2f8f9e] disabled:opacity-40" aria-label="Lower set point">
+          <button onClick={() => onStep(-0.5)} disabled={disabled || (sp != null && sp <= SP_MIN)} className="rounded-[4px] border border-[#b58ce3] text-[#482a6a] disabled:opacity-40" aria-label="Lower set point">
             <ChevronDown size={14} />
           </button>
         </div>
@@ -103,7 +103,7 @@ function SetPoint({ value, onStep, disabled, sp }: { value: string; onStep?: (d:
 function FanIcon({ spinning, speed }: { spinning: boolean; speed: number }) {
   return (
     <motion.span className="inline-block" animate={spinning ? { rotate: 360 } : { rotate: 0 }} transition={spinning ? { duration: 2.4 / Math.max(1, speed), repeat: Infinity, ease: 'linear' } : {}}>
-      <Glyph id="fan" size={13} color="#2f8f9e" />
+      <Glyph id="fan" size={13} color="#482a6a" />
     </motion.span>
   );
 }
@@ -164,7 +164,7 @@ function LiveFcu({ name, label, onClose }: { name: string; label: string; onClos
           )}
           <AnimatePresence>
             {result && (
-              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={`mt-[8px] text-[11px] ${result.accepted ? 'text-[#2fae4f]' : 'text-[#d93636]'}`}>
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={`mt-[8px] text-[11px] ${result.accepted ? 'text-[#2fae4f]' : 'text-[#c25a74]'}`}>
                 {result.accepted ? 'Saved (simulated).' : `Refused (${result.code})${result.message ? `: ${result.message}` : ''}`}
               </motion.p>
             )}
@@ -215,7 +215,7 @@ function SimFcu({ id, label, onClose, note }: { id: string; label: string; onClo
   const temp = useRoomTemp(id, fcu);
   const modes: FcuState['mode'][] = ['Cooling', 'Heating', 'Fan'];
   return (
-    <Frame label={label} onClose={onClose} badge={<span className="text-aqua-soft">SIM</span>} footer={<p className="mt-[8px] text-[11px] text-[#8fb4ba]">{note}</p>}>
+    <Frame label={label} onClose={onClose} badge={<span className="text-aqua-soft">SIM</span>} footer={<p className="mt-[8px] text-[11px] text-[#bbaacb]">{note}</p>}>
       <div className={col}>
         <span className={lbl}>{fcu.on ? 'ON' : 'OFF'}</span>
         <PowerButton on={fcu.on} onClick={() => setFcu(id, { on: !fcu.on })} />

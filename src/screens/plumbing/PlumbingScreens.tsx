@@ -37,10 +37,10 @@ import {
 } from '@/model/assets/water';
 
 const num = (v: unknown) => (typeof v === 'number' ? v : 0);
-const wrench = <Glyph id="wrench" size={20} color="#fff" />;
+const wrench = <Glyph id="wrench" size={20} color="#ffffff" />;
 
 /* =================================================================================================
- * Plumbing › Domestic Irrigation
+ * Plumbing › Domestic / Irrigation
  * ================================================================================================= */
 
 const QUALITY_LIMITS = [
@@ -78,7 +78,7 @@ export function DomesticScreen() {
       <Panel frame={kpis[2]} index={2} icon={wrench} title="Domestic Demand" subtitle="Ring main flow now">
         <KpiBody source={{ fixed: dom }} decimals={1} unit="m³/h" note={`≈ ${fmt(dom * 0.7 * hours)} m³ today`} />
       </Panel>
-      <Panel frame={kpis[3]} index={3} icon={wrench} title="Irrigation" subtitle="TSE, dawn and dusk programs">
+      <Panel frame={kpis[3]} index={3} icon={wrench} title="Irrigation" subtitle="TSE · zone program running">
         <KpiBody source={{ fixed: irr }} decimals={1} unit="m³/h" note={running ? <Tag tone="good">{running.z.label} watering</Tag> : `Next ${next.v.Next_Start} · ${next.z.label}`} />
       </Panel>
 
@@ -89,20 +89,20 @@ export function DomesticScreen() {
             const x = 30 + i * 225;
             return (
               <g key={t.tag}>
-                <Tank x={x} y={26} w={110} h={150} level={num(v.Level_Pct) / 100} label={t.label} value={`${fmt(num(v.Level_Pct))}%`} color={t.tag === 'TANK_FIRE_01' ? '#ff6b6b' : t.tag === 'TANK_IRR_01' ? '#7fd67f' : '#4fb6ff'} />
-                <text x={x + 122} y={60} fill="#79a4aa" fontSize={12}>
+                <Tank x={x} y={26} w={110} h={150} level={num(v.Level_Pct) / 100} label={t.label} value={`${fmt(num(v.Level_Pct))}%`} color={t.tag === 'TANK_FIRE_01' ? '#e59aaa' : t.tag === 'TANK_IRR_01' ? '#7fd67f' : '#7283ff'} />
+                <text x={x + 122} y={60} fill="#b09dc1" fontSize={12}>
                   {fmt(num(v.Volume_m3))} m³
                 </text>
-                <text x={x + 122} y={80} fill="#79a4aa" fontSize={12}>
+                <text x={x + 122} y={80} fill="#b09dc1" fontSize={12}>
                   of {fmt(t.capacity)}
                 </text>
-                <text x={x + 122} y={112} fill={v.Inlet_Valve_Open ? '#4fb6ff' : '#79a4aa'} fontSize={12}>
+                <text x={x + 122} y={112} fill={v.Inlet_Valve_Open ? '#7283ff' : '#b09dc1'} fontSize={12}>
                   in {fmt(num(v.Inflow_m3h), 1)}
                 </text>
-                <text x={x + 122} y={132} fill="#79a4aa" fontSize={12}>
+                <text x={x + 122} y={132} fill="#b09dc1" fontSize={12}>
                   out {fmt(num(v.Outflow_m3h), 1)}
                 </text>
-                <text x={x + 122} y={146} fill="#79a4aa" fontSize={11}>
+                <text x={x + 122} y={146} fill="#b09dc1" fontSize={11}>
                   m³/h
                 </text>
               </g>
@@ -237,7 +237,7 @@ function chamberState(vc: ValveChamber, v: Record<string, unknown>): [string, Ta
   return [v.Valve_Open ? 'Open' : 'Closed', 'good'];
 }
 
-const MARKER: Record<TagTone, string> = { good: '#4ade6b', warn: '#ffb020', bad: '#ef4444', info: '#4fb6ff', idle: '#8aa5aa' };
+const MARKER: Record<TagTone, string> = { good: '#7fcf9d', warn: '#e8a98c', bad: '#d96b84', info: '#7283ff', idle: '#b5a8c0' };
 
 export function ValveChambersScreen() {
   const now = useNow(2000);
@@ -276,8 +276,8 @@ export function ValveChambersScreen() {
           return (
             <g key={vc.tag} onClick={() => setSel(vc.tag)} style={{ cursor: 'pointer' }}>
               {t === 'bad' && <circle cx={vc.x} cy={vc.y} r={34} fill="none" stroke={MARKER.bad} strokeWidth={4} style={{ animation: 'pf-alarm-blink 1s infinite' }} />}
-              <circle cx={vc.x} cy={vc.y} r={on ? 22 : 17} fill={MARKER[t]} stroke="#fff" strokeWidth={on ? 5 : 3} />
-              <text x={vc.x} y={vc.y - 30} textAnchor="middle" fill="#fff" fontSize={28} fontWeight={600} style={{ paintOrder: 'stroke', stroke: '#010707', strokeWidth: 7 }}>
+              <circle cx={vc.x} cy={vc.y} r={on ? 22 : 17} fill={MARKER[t]} stroke="#ffffff" strokeWidth={on ? 5 : 3} />
+              <text x={vc.x} y={vc.y - 30} textAnchor="middle" fill="#ffffff" fontSize={28} fontWeight={600} style={{ paintOrder: 'stroke', stroke: '#020102', strokeWidth: 7 }}>
                 {vc.label}
               </text>
             </g>

@@ -6,7 +6,7 @@ import { useScenario, type Severity } from '@/sim/scenario';
 import { useNow } from '@/sim/clock';
 import { timeAgo } from '@/utils/format';
 
-const SEVERITY: Record<Severity, string> = { critical: '#ef4444', warning: '#ffb020', info: '#4fc3d4' };
+const SEVERITY: Record<Severity, string> = { critical: '#d96b84', warning: '#e8a98c', info: '#b58ce3' };
 
 /** Bell with unread badge; opens the platform's notification center (and the session menu). */
 export function NotificationBell() {
@@ -52,7 +52,7 @@ export function NotificationBell() {
         {unread.length > 0 && (
           <span
             className="absolute -right-[4px] -top-[2px] flex h-[20px] min-w-[20px] items-center justify-center rounded-full px-[5px] text-[12px] font-semibold text-night-950"
-            style={{ background: critical ? '#ef4444' : '#ffb020', boxShadow: `0 0 12px ${critical ? '#ef4444' : '#ffb020'}` }}
+            style={{ background: critical ? '#d96b84' : '#e8a98c', boxShadow: `0 0 12px ${critical ? '#d96b84' : '#e8a98c'}` }}
           >
             {unread.length}
           </span>

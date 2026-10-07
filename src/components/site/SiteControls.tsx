@@ -20,11 +20,11 @@ export function FloorRail({ floors, active, hovered, onHover, onSelect }: { floo
             onMouseEnter={() => onHover?.(f.id)}
             onMouseLeave={() => onHover?.(null)}
             onClick={() => onSelect(f.id)}
-            className={clsx('h-[64px] w-[64px] rounded-[8px] text-[24px] transition-all duration-200', on ? 'bg-white text-[#2f8f9e]' : 'text-[#a6a8ff] hover:text-white')}
+            className={clsx('h-[64px] w-[64px] rounded-[8px] text-[24px] transition-all duration-200', on ? 'bg-white text-[#482a6a]' : 'text-[#a6a8ff] hover:text-white')}
             style={
               on
                 ? { boxShadow: '0 0 20px rgba(255,255,255,0.35)' }
-                : { background: hot ? 'rgba(79,195,212,0.65)' : 'rgba(79,195,212,0.42)', boxShadow: hot ? '0 0 16px rgba(79,195,212,0.6)' : 'inset 0 1px 0 rgba(255,255,255,0.12)' }
+                : { background: hot ? 'rgba(181,140,227,0.65)' : 'rgba(181,140,227,0.42)', boxShadow: hot ? '0 0 16px rgba(181,140,227,0.6)' : 'inset 0 1px 0 rgba(255,255,255,0.12)' }
             }
             aria-current={on ? 'page' : undefined}
           >
@@ -45,13 +45,13 @@ export function SystemsPicker({ value, onChange }: { value: OverlaySystem; onCha
       transition={{ delay: 0.2 }}
       className="absolute right-[15px] top-[19px] z-10 w-[172px] overflow-hidden rounded-[8px] bg-white font-[family-name:var(--font-plain)] shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
     >
-      <div className="bg-[#2f8f9e] py-[10px] text-center text-[20px] font-medium text-white">Systems</div>
+      <div className="bg-[#482a6a] py-[10px] text-center text-[20px] font-medium text-white">Systems</div>
       <div className="flex flex-col gap-[18px] px-[16px] py-[18px]" role="radiogroup">
         {OVERLAY_SYSTEMS.map((s) => {
           const on = s.id === value;
           return (
-            <button key={s.id} role="radio" aria-checked={on} onClick={() => onChange(s.id)} className="flex items-center gap-[12px] text-left text-[18px] text-[#0d3438]">
-              <span className="flex h-[20px] w-[20px] items-center justify-center rounded-full" style={{ border: on ? '5px solid #4fc3d4' : '1.5px solid #d9f3f6', background: '#fff' }} />
+            <button key={s.id} role="radio" aria-checked={on} onClick={() => onChange(s.id)} className="flex items-center gap-[12px] text-left text-[18px] text-[#07050a]">
+              <span className="flex h-[20px] w-[20px] items-center justify-center rounded-full" style={{ border: on ? '5px solid #b58ce3' : '1.5px solid #e4d6f5', background: '#ffffff' }} />
               {s.label}
             </button>
           );
@@ -69,14 +69,14 @@ export function InfoCard({ title, children, className, style, onClose }: { title
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 6, scale: 0.97 }}
       transition={{ duration: 0.18 }}
-      className={clsx('absolute z-20 rounded-[8px] bg-white p-[6px] font-[family-name:var(--font-plain)] text-[#0d3438] shadow-[0_14px_40px_rgba(0,0,0,0.45)]', className)}
+      className={clsx('absolute z-20 rounded-[8px] bg-white p-[6px] font-[family-name:var(--font-plain)] text-[#07050a] shadow-[0_14px_40px_rgba(0,0,0,0.45)]', className)}
       style={style}
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="flex items-center gap-[8px] rounded-[8px] bg-[#e6e7ff] px-[10px] py-[7px] text-[17px] text-[#2f8f9e]">
+      <div className="flex items-center gap-[8px] rounded-[8px] bg-[#e6e7ff] px-[10px] py-[7px] text-[17px] text-[#482a6a]">
         {title}
         {onClose && (
-          <button onClick={onClose} className="ml-auto text-[18px] leading-none text-[#4fc3d4] hover:text-[#2f8f9e]" aria-label="Close">
+          <button onClick={onClose} className="ml-auto text-[18px] leading-none text-[#b58ce3] hover:text-[#482a6a]" aria-label="Close">
             ×
           </button>
         )}
@@ -93,7 +93,7 @@ export function LegendChip({ children }: { children: ReactNode }) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 10 }}
-      className="absolute bottom-[22px] left-1/2 z-10 flex -translate-x-1/2 items-center gap-[18px] rounded-[8px] border border-[#d5d6ff] bg-white px-[14px] py-[8px] font-[family-name:var(--font-plain)] text-[20px] text-[#2f8f9e] shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
+      className="absolute bottom-[22px] left-1/2 z-10 flex -translate-x-1/2 items-center gap-[18px] rounded-[8px] border border-[#d5d6ff] bg-white px-[14px] py-[8px] font-[family-name:var(--font-plain)] text-[20px] text-[#482a6a] shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
     >
       {children}
     </motion.div>

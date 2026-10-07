@@ -42,18 +42,18 @@ export function Stage({ children }: { children: ReactNode }) {
 
   return (
     <div ref={root} className="fixed inset-0 overflow-hidden bg-night-950">
-      <div aria-hidden className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 90% 60% at 50% 0%, #17586a 0%, rgba(23,88,106,0) 70%), linear-gradient(180deg, #0f4350 0%, #0a303b 38%, #06222b 70%, #041a21 100%)' }} />
+      <div aria-hidden className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 90% 55% at 50% 0%, #0d0a13 0%, rgba(13,10,19,0) 70%), linear-gradient(180deg, #070509 0%, #050307 38%, #040206 70%, #030104 100%)' }} />
       {/* The floor: a wide grid receding to the horizon behind the cards. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute opacity-[0.16]"
+        className="pointer-events-none absolute opacity-[0.07]"
         style={{
           inset: '38% -30% -45%',
           transform: 'perspective(700px) rotateX(62deg)',
-          background: 'linear-gradient(rgba(140,230,250,.55) 1px, transparent 1px), linear-gradient(90deg, rgba(140,230,250,.55) 1px, transparent 1px)',
+          background: 'linear-gradient(rgba(179,118,250,.55) 1px, transparent 1px), linear-gradient(90deg, rgba(179,118,250,.55) 1px, transparent 1px)',
           backgroundSize: '150px 110px',
-          maskImage: 'linear-gradient(180deg, transparent 0%, #000 35%)',
-          WebkitMaskImage: 'linear-gradient(180deg, transparent 0%, #000 35%)',
+          maskImage: 'linear-gradient(180deg, transparent 0%, #000000 35%)',
+          WebkitMaskImage: 'linear-gradient(180deg, transparent 0%, #000000 35%)',
         }}
       />
       <ScaleContext.Provider value={scale}>

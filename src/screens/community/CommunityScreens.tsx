@@ -21,11 +21,11 @@ import { fmt } from '@/utils/format';
  * ================================================================================================= */
 
 const FEATURES = [
-  { name: 'Wayfinding', share: 0.31, color: '#4fdcff' },
-  { name: 'Offers & Coupons', share: 0.24, color: '#4fc3d4' },
-  { name: 'Parking Payment', share: 0.16, color: '#4ade6b' },
+  { name: 'Wayfinding', share: 0.31, color: '#9d78ff' },
+  { name: 'Offers & Coupons', share: 0.24, color: '#b58ce3' },
+  { name: 'Parking Payment', share: 0.16, color: '#7fcf9d' },
   { name: 'Loyalty Points', share: 0.13, color: '#5b7cff' },
-  { name: 'Events & Cinema', share: 0.1, color: '#ff6b6b' },
+  { name: 'Events & Cinema', share: 0.1, color: '#e59aaa' },
   { name: 'Store Directory', share: 0.06, color: '#ffffff' },
 ];
 
@@ -50,18 +50,18 @@ export function ApplicationScreen() {
               value="4.6"
               unit="of 5"
               segments={[
-                { value: 71, color: '#4ade6b' },
-                { value: 17, color: '#4fdcff' },
-                { value: 12, color: '#ef4444' },
+                { value: 71, color: '#7fcf9d' },
+                { value: 17, color: '#9d78ff' },
+                { value: 12, color: '#d96b84' },
               ]}
             />
           </div>
           <Hairline />
           <ul className="flex-1 space-y-[12px] pl-[40px] text-[16px] text-ink-2">
             {[
-              ['5–4 ★', '71%', '#4ade6b'],
-              ['3 ★', '17%', '#4fdcff'],
-              ['2–1 ★', '12%', '#ef4444'],
+              ['5–4 ★', '71%', '#7fcf9d'],
+              ['3 ★', '17%', '#9d78ff'],
+              ['2–1 ★', '12%', '#d96b84'],
             ].map(([k, v, c]) => (
               <li key={k} className="flex items-center gap-[10px]">
                 <span className="h-[8px] w-[8px] rounded-full" style={{ background: c }} />
@@ -156,16 +156,16 @@ export function NavigationScreen() {
       <SiteMap frame={map}>
         {PLACES.map((p) => (
           <g key={p.name}>
-            <circle cx={p.x} cy={p.y} r={10} fill="#4fc3d4" opacity={0.9} />
-            <text x={p.x} y={p.y - 20} fill="#fff" fontSize={26} textAnchor="middle" style={{ paintOrder: 'stroke', stroke: '#010707', strokeWidth: 6 }}>
+            <circle cx={p.x} cy={p.y} r={10} fill="#b58ce3" opacity={0.9} />
+            <text x={p.x} y={p.y - 20} fill="#ffffff" fontSize={26} textAnchor="middle" style={{ paintOrder: 'stroke', stroke: '#020102', strokeWidth: 6 }}>
               {p.name}
             </text>
           </g>
         ))}
         {KIOSKS.map((k) => (
           <g key={k.id}>
-            <rect x={k.x - 16} y={k.y - 16} width={32} height={32} rx={6} fill={q?.data.kiosk.id === k.id ? '#4fdcff' : '#0d3438'} stroke="#4fdcff" strokeWidth={2} />
-            <text x={k.x} y={k.y + 7} fill={q?.data.kiosk.id === k.id ? '#010707' : '#4fdcff'} fontSize={18} textAnchor="middle" fontWeight={600}>
+            <rect x={k.x - 16} y={k.y - 16} width={32} height={32} rx={6} fill={q?.data.kiosk.id === k.id ? '#9d78ff' : '#07050a'} stroke="#9d78ff" strokeWidth={2} />
+            <text x={k.x} y={k.y + 7} fill={q?.data.kiosk.id === k.id ? '#020102' : '#9d78ff'} fontSize={18} textAnchor="middle" fontWeight={600}>
               {k.id.slice(1)}
             </text>
           </g>
@@ -173,9 +173,9 @@ export function NavigationScreen() {
         <AnimatePresence mode="wait">
           {q && (
             <motion.g key={q.key} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <motion.path d={routePath(q.data.kiosk, q.data.place)} fill="none" stroke="#4fdcff" strokeWidth={8} strokeLinecap="round" strokeLinejoin="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.6, ease: 'easeInOut' }} style={{ filter: 'drop-shadow(0 0 10px rgba(79,220,255,0.8))' }} />
-              <path d={routePath(q.data.kiosk, q.data.place)} fill="none" stroke="#fff" strokeWidth={3} strokeDasharray="4 22" strokeLinecap="round" style={{ animation: 'pf-dash 1s linear infinite' }} />
-              <circle cx={q.data.place.x} cy={q.data.place.y} r={22} fill="none" stroke="#4fdcff" strokeWidth={4}>
+              <motion.path d={routePath(q.data.kiosk, q.data.place)} fill="none" stroke="#9d78ff" strokeWidth={8} strokeLinecap="round" strokeLinejoin="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.6, ease: 'easeInOut' }} style={{ filter: 'drop-shadow(0 0 10px rgba(157,120,255,0.8))' }} />
+              <path d={routePath(q.data.kiosk, q.data.place)} fill="none" stroke="#ffffff" strokeWidth={3} strokeDasharray="4 22" strokeLinecap="round" style={{ animation: 'pf-dash 1s linear infinite' }} />
+              <circle cx={q.data.place.x} cy={q.data.place.y} r={22} fill="none" stroke="#9d78ff" strokeWidth={4}>
                 <animate attributeName="r" values="14;34;14" dur="1.6s" repeatCount="indefinite" />
               </circle>
             </motion.g>
@@ -199,7 +199,7 @@ export function NavigationScreen() {
             <div key={p.name} className="flex items-center gap-[12px] text-[15px]">
               <span className="w-[150px] text-white">{p.name}</span>
               <div className="relative h-[8px] flex-1 overflow-hidden rounded-full bg-white/10">
-                <motion.span className="absolute inset-y-0 left-0 rounded-full bg-accent" style={{ boxShadow: '0 0 8px #4fdcff' }} animate={{ width: `${(n / max) * 100}%` }} />
+                <motion.span className="absolute inset-y-0 left-0 rounded-full bg-accent" style={{ boxShadow: '0 0 8px #9d78ff' }} animate={{ width: `${(n / max) * 100}%` }} />
               </div>
               <span className="w-[32px] text-right tabular-nums text-ink-3">{n}</span>
             </div>
@@ -260,10 +260,10 @@ export function CrowdScreen() {
       <SiteMap frame={map} dim={0.35}>
         <defs>
           <radialGradient id="heat">
-            <stop offset="0" stopColor="#ff3b30" stopOpacity="0.85" />
-            <stop offset="0.35" stopColor="#ffaa00" stopOpacity="0.55" />
-            <stop offset="0.7" stopColor="#3aa8ff" stopOpacity="0.25" />
-            <stop offset="1" stopColor="#3aa8ff" stopOpacity="0" />
+            <stop offset="0" stopColor="#d96b84" stopOpacity="0.85" />
+            <stop offset="0.35" stopColor="#e8a98c" stopOpacity="0.55" />
+            <stop offset="0.7" stopColor="#6174ff" stopOpacity="0.25" />
+            <stop offset="1" stopColor="#6174ff" stopOpacity="0" />
           </radialGradient>
         </defs>
         {zones.map((z) => {
@@ -271,7 +271,7 @@ export function CrowdScreen() {
           return (
             <g key={z.id}>
               <motion.circle cx={z.x} cy={z.y} r={r * 0.94} fill="url(#heat)" animate={{ r: [r * 0.94, r * 1.04, r * 0.94], opacity: 0.35 + Math.min(0.6, z.density) }} transition={{ r: { duration: 4, repeat: Infinity }, opacity: { duration: 1 } }} style={{ mixBlendMode: 'screen' }} />
-              <text x={z.x} y={z.y + 8} fill="#fff" fontSize={28} textAnchor="middle" style={{ paintOrder: 'stroke', stroke: '#010707', strokeWidth: 7 }}>
+              <text x={z.x} y={z.y + 8} fill="#ffffff" fontSize={28} textAnchor="middle" style={{ paintOrder: 'stroke', stroke: '#020102', strokeWidth: 7 }}>
                 {fmt(z.people)}
               </text>
             </g>
@@ -280,7 +280,7 @@ export function CrowdScreen() {
       </SiteMap>
       <div className="absolute left-[92px] top-[228px] flex items-center gap-[12px] rounded-full border border-white/15 bg-night-900/80 px-[16px] py-[6px] text-[13px] text-ink-2 backdrop-blur">
         Density
-        <span className="h-[8px] w-[120px] rounded-full" style={{ background: 'linear-gradient(90deg, #3aa8ff, #ffaa00, #ff3b30)' }} />
+        <span className="h-[8px] w-[120px] rounded-full" style={{ background: 'linear-gradient(90deg, #6174ff, #e8a98c, #d96b84)' }} />
         people / m²
       </div>
       <TrendCard frame={trend} index={1} icon={<PeopleIcon />} title="Visitors On Site" subtitle="Counted by cameras at every entrance" sim="community.visitors" yTitle="Visitors" decimals={0} />
@@ -288,7 +288,7 @@ export function CrowdScreen() {
         <div className="absolute inset-x-[20px] top-[10px] flex flex-col gap-[12px]">
           <div className="mb-[4px] flex items-baseline gap-[10px]">
             <span className="text-[48px] leading-none text-white">{fmt(zones.reduce((a, z) => a + z.people, 0))}</span>
-            <span className="text-[16px] text-[#79a4aa]">people in monitored zones</span>
+            <span className="text-[16px] text-[#b09dc1]">people in monitored zones</span>
           </div>
           {zones.map((z) => (
             <div key={z.id} className="border-b border-white/[0.06] pb-[10px]">
@@ -315,8 +315,8 @@ export function CrowdScreen() {
 const PLATFORMS = [
   { name: 'Instagram', color: '#e1306c' },
   { name: 'X', color: '#ffffff' },
-  { name: 'Facebook', color: '#1877f2' },
-  { name: 'TikTok', color: '#25f4ee' },
+  { name: 'Facebook', color: '#465bf5' },
+  { name: 'TikTok', color: '#b071f8' },
 ];
 
 const POST_TEXT: [string, 'Positive' | 'Neutral' | 'Negative'][] = [
@@ -364,7 +364,7 @@ export function SocialScreen() {
       <Panel frame={sent} index={0} icon={chat} title="Sentiment" subtitle={`${fmt(today)} mentions today`}>
         <div className="flex h-full items-center">
           <div className="flex w-[48%] justify-center">
-            <RingGauge value={`${Math.round(pos)}%`} unit="positive" segments={[{ value: pos, color: '#4ade6b' }, { value: neu, color: '#4fc3d4' }, { value: neg, color: '#ef4444' }]} />
+            <RingGauge value={`${Math.round(pos)}%`} unit="positive" segments={[{ value: pos, color: '#7fcf9d' }, { value: neu, color: '#b58ce3' }, { value: neg, color: '#d96b84' }]} />
           </div>
           <Hairline />
           <div className="flex flex-1 flex-col gap-[12px] pl-[40px]">
@@ -404,7 +404,7 @@ export function SocialScreen() {
               <div key={h} className="flex items-center gap-[14px] text-[16px]">
                 <span className="w-[170px] text-white">{h}</span>
                 <div className="relative h-[8px] flex-1 overflow-hidden rounded-full bg-white/10">
-                  <motion.span className="absolute inset-y-0 left-0 rounded-full bg-aqua" style={{ boxShadow: '0 0 8px #4fc3d4' }} initial={{ width: 0 }} animate={{ width: `${(v / 833) * 100}%` }} transition={{ duration: 0.9, delay: i * 0.08 }} />
+                  <motion.span className="absolute inset-y-0 left-0 rounded-full bg-aqua" style={{ boxShadow: '0 0 8px #b58ce3' }} initial={{ width: 0 }} animate={{ width: `${(v / 833) * 100}%` }} transition={{ duration: 0.9, delay: i * 0.08 }} />
                 </div>
                 <span className="w-[48px] text-right tabular-nums text-ink-3">{fmt(v)}</span>
               </div>

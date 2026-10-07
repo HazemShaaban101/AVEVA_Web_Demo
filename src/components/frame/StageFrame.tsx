@@ -9,7 +9,7 @@ export interface Crumb {
 }
 
 /**
- * The cyan-framed viewport of the 3D View drill-down (Frame 490/HVAC): 28px corners, 2px #4fdcff,
+ * The cyan-framed viewport of the 3D View drill-down (Frame 490/HVAC): 28px corners, 2px #9d78ff,
  * a faint fill, and the breadcrumb in the top-left. Content is clipped to the frame.
  */
 export function StageFrame({ crumbs, children, overlay }: { crumbs: Crumb[]; children: ReactNode; overlay?: ReactNode }) {
@@ -19,10 +19,10 @@ export function StageFrame({ crumbs, children, overlay }: { crumbs: Crumb[]; chi
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       className="absolute left-[52px] top-[206px] h-[775px] w-[1816px] overflow-hidden rounded-[8px]"
-      style={{ background: 'linear-gradient(180deg, rgba(124,123,123,0) 0%, rgba(3,25,26,0.12) 78%)' }}
+      style={{ background: 'linear-gradient(180deg, rgba(124,123,123,0) 0%, rgba(6,3,8,0.12) 78%)' }}
     >
       {children}
-      <div className="pointer-events-none absolute inset-0 rounded-[8px] border border-accent/60" style={{ boxShadow: 'inset 0 0 30px rgba(79,220,255,0.08)' }} />
+      <div className="pointer-events-none absolute inset-0 rounded-[8px] border border-accent/60" style={{ boxShadow: 'inset 0 0 30px rgba(157,120,255,0.08)' }} />
       <Breadcrumb crumbs={crumbs} />
       {overlay}
     </motion.div>

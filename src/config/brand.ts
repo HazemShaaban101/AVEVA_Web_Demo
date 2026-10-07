@@ -3,7 +3,6 @@
  * Rename the platform here.
  */
 export const BRAND = {
-  name: 'IoT Platform',
-  tagline: 'Smart Mall Operations',
+  name: 'Unified Operation Center',
   location: 'Cairo, Egypt',
 };

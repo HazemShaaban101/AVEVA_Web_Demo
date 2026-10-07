@@ -29,7 +29,7 @@ import {
 } from '@/model/assets/wastewater';
 
 const num = (v: unknown) => (typeof v === 'number' ? v : 0);
-const icon = <Glyph id="waste" size={20} color="#fff" />;
+const icon = <Glyph id="waste" size={20} color="#ffffff" />;
 
 /* =================================================================================================
  * Wastewater › Submersible Pumps
@@ -43,13 +43,13 @@ function WetWell({ st, level, pumps }: { st: LiftStation; level: number; pumps: 
   const bottom = H - 26;
   const y = (m: number) => bottom - (m / st.depth) * (bottom - top);
   const marks = [
-    { m: st.hh, label: 'HH', color: '#ef4444' },
-    { m: st.start, label: 'Start', color: '#4fdcff' },
-    { m: st.stop, label: 'Stop', color: '#4ade6b' },
+    { m: st.hh, label: 'HH', color: '#d96b84' },
+    { m: st.start, label: 'Start', color: '#9d78ff' },
+    { m: st.stop, label: 'Stop', color: '#7fcf9d' },
   ];
   return (
     <svg width={W + 52} height={H} aria-hidden>
-      <rect x={2} y={top} width={W} height={bottom - top + 4} rx={6} fill="#031a1c" stroke="rgba(255,255,255,0.3)" />
+      <rect x={2} y={top} width={W} height={bottom - top + 4} rx={6} fill="#060408" stroke="rgba(255,255,255,0.3)" />
       <rect x={4} y={y(level)} width={W - 4} height={bottom + 2 - y(level)} fill={SEWAGE} fillOpacity={0.45} style={{ transition: 'all 1s' }} />
       <line x1={4} x2={W} y1={y(level)} y2={y(level)} stroke="#e0b98a" strokeWidth={1.6} style={{ transition: 'all 1s' }} />
       {marks.map((mk) => (
@@ -62,9 +62,9 @@ function WetWell({ st, level, pumps }: { st: LiftStation; level: number; pumps: 
       ))}
       {pumps.map((on, i) => {
         const cx = 18 + i * ((W - 30) / Math.max(1, pumps.length - 1 || 1));
-        return <rect key={i} x={cx - 9} y={bottom - 16} width={18} height={16} rx={3} fill={on ? '#4ade6b' : '#3a5a60'} stroke="#031a1c" />;
+        return <rect key={i} x={cx - 9} y={bottom - 16} width={18} height={16} rx={3} fill={on ? '#7fcf9d' : '#372c42'} stroke="#060408" />;
       })}
-      <text x={2} y={H - 6} fill="#79a4aa" fontSize={10.5}>
+      <text x={2} y={H - 6} fill="#b09dc1" fontSize={10.5}>
         depth {st.depth} m
       </text>
     </svg>
@@ -137,7 +137,7 @@ export function SubmersiblePumpsScreen() {
                     </span>
                   ))}
                   <span className="mt-auto text-[11px] text-ink-4">Level, last hour</span>
-                  <Sparkline data={history} width={cards[i].w - 230} height={34} min={0} max={st.hh} color="#e0b98a" refs={[{ value: st.start, color: '#4fdcff' }]} />
+                  <Sparkline data={history} width={cards[i].w - 230} height={34} min={0} max={st.hh} color="#e0b98a" refs={[{ value: st.start, color: '#9d78ff' }]} />
                 </div>
               </div>
             </div>
@@ -229,7 +229,7 @@ export function OdorControlScreen() {
                 {carbonWarn && <Tag tone="warn">Carbon change due</Tag>}
               </div>
               <div className="flex items-center gap-[18px]">
-                <RingGauge size={128} value={`${fmt(eff, 1)}%`} unit="removal" segments={[{ value: eff, color: eff > 97 ? '#4ade6b' : '#ffb020' }, { value: 100 - eff, color: 'rgba(255,255,255,0.08)' }]} />
+                <RingGauge size={128} value={`${fmt(eff, 1)}%`} unit="removal" segments={[{ value: eff, color: eff > 97 ? '#7fcf9d' : '#e8a98c' }, { value: 100 - eff, color: 'rgba(255,255,255,0.08)' }]} />
                 <div className="flex flex-col gap-[4px]">
                   <span className="text-[13px] text-ink-3">H₂S inlet → stack</span>
                   <span className="text-[26px] leading-none text-white tabular-nums">

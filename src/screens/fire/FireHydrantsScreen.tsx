@@ -26,10 +26,10 @@ import {
 import type { AttrValues } from '@/model/assets/galaxy';
 
 const num = (v: unknown) => (typeof v === 'number' ? v : 0);
-const MARKER: Record<TagTone, string> = { good: '#4ade6b', warn: '#ffb020', bad: '#ef4444', info: '#4fb6ff', idle: '#8aa5aa' };
+const MARKER: Record<TagTone, string> = { good: '#7fcf9d', warn: '#e8a98c', bad: '#d96b84', info: '#7283ff', idle: '#b5a8c0' };
 
 /** A pillar hydrant: bonnet, barrel and two outlets. */
-export function HydrantIcon({ size = 20, color = '#fff' }: { size?: number; color?: string }) {
+export function HydrantIcon({ size = 20, color = '#ffffff' }: { size?: number; color?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
       <path d="M8 8a4 4 0 0 1 8 0" />
@@ -94,8 +94,8 @@ export function FireHydrantsScreen() {
           return (
             <g key={h.tag} onClick={() => setSel(h.tag)} style={{ cursor: 'pointer' }}>
               {(t === 'bad' || v.Flowing) && <circle cx={h.x} cy={h.y} r={40} fill="none" stroke={MARKER[t]} strokeWidth={5} style={{ animation: 'pf-alarm-blink 1s infinite' }} />}
-              <circle cx={h.x} cy={h.y} r={on ? 26 : 20} fill={MARKER[t]} stroke="#fff" strokeWidth={on ? 6 : 3} />
-              <text x={h.x} y={h.y - 36} textAnchor="middle" fill="#fff" fontSize={34} fontWeight={600} style={{ paintOrder: 'stroke', stroke: '#010707', strokeWidth: 8 }}>
+              <circle cx={h.x} cy={h.y} r={on ? 26 : 20} fill={MARKER[t]} stroke="#ffffff" strokeWidth={on ? 6 : 3} />
+              <text x={h.x} y={h.y - 36} textAnchor="middle" fill="#ffffff" fontSize={34} fontWeight={600} style={{ paintOrder: 'stroke', stroke: '#020102', strokeWidth: 8 }}>
                 {h.label}
               </text>
             </g>
@@ -188,7 +188,7 @@ function HydrantDetail({ frame, h, v, now }: { frame: { x: number; y: number; w:
         </div>
         {h.tag === HYD_ISOLATED && <p className="rounded-[8px] border border-alarm/40 bg-alarm/10 px-[12px] py-[9px] text-[13px] text-alarm-soft">Isolated for a barrel gasket replacement. Use H-06 or H-08 for this area until it is back in service.</p>}
         {h.tag === HYD_TAMPER && <p className="rounded-[8px] border border-warn/40 bg-warn/10 px-[12px] py-[9px] text-[13px] text-warn-soft">Outlet cap was removed: send a guard to check for unauthorised water use or damage, then re-seal.</p>}
-        {v.Flowing && h.tag === HYD_DRILL && <p className="rounded-[8px] border border-[#4fb6ff]/40 bg-[#4fb6ff]/10 px-[12px] py-[9px] text-[13px] text-[#9fd6ff]">Civil defence connected during the fire alarm. Main pressure drops while it flows.</p>}
+        {v.Flowing && h.tag === HYD_DRILL && <p className="rounded-[8px] border border-[#7283ff]/40 bg-[#7283ff]/10 px-[12px] py-[9px] text-[13px] text-[#9d78ff]">Civil defence connected during the fire alarm. Main pressure drops while it flows.</p>}
       </div>
     </AssetPanel>
   );
@@ -208,7 +208,7 @@ function FlowTestChart({ hydrants, selected, onSelect }: { hydrants: { h: Hydran
         {[0, 1000, 2000, 3000].map((q) => (
           <g key={q}>
             <line x1={pad.l} x2={W - pad.r} y1={y(q)} y2={y(q)} stroke="rgba(255,255,255,0.07)" />
-            <text x={pad.l - 6} y={y(q) + 3.5} textAnchor="end" fill="#79a4aa" fontSize={10}>
+            <text x={pad.l - 6} y={y(q) + 3.5} textAnchor="end" fill="#b09dc1" fontSize={10}>
               {q ? `${q / 1000}k` : '0'}
             </text>
           </g>
@@ -226,22 +226,22 @@ function FlowTestChart({ hydrants, selected, onSelect }: { hydrants: { h: Hydran
                 x={x}
                 width={w}
                 rx={2}
-                fill={pass ? '#4fdcff' : '#ffb020'}
+                fill={pass ? '#9d78ff' : '#e8a98c'}
                 fillOpacity={on ? 1 : 0.7}
-                stroke={on ? '#fff' : 'none'}
+                stroke={on ? '#ffffff' : 'none'}
                 strokeWidth={1.5}
                 initial={{ y: y(0), height: 0 }}
                 animate={{ y: y(q), height: y(0) - y(q) }}
                 transition={{ duration: 0.8, delay: 0.3 + i * 0.03 }}
               />
-              <text x={x + w / 2} y={H - pad.b + 14} textAnchor="middle" fill={on ? '#4fdcff' : '#79a4aa'} fontSize={10}>
+              <text x={x + w / 2} y={H - pad.b + 14} textAnchor="middle" fill={on ? '#9d78ff' : '#b09dc1'} fontSize={10}>
                 {h.label.slice(2)}
               </text>
             </g>
           );
         })}
-        <line x1={pad.l} x2={W - pad.r} y1={y(REQUIRED_FLOW_LPM)} y2={y(REQUIRED_FLOW_LPM)} stroke="#ef4444" strokeDasharray="5 4" strokeWidth={1.3} />
-        <text x={W - pad.r} y={y(REQUIRED_FLOW_LPM) - 5} textAnchor="end" fill="#ff8a8a" fontSize={10}>
+        <line x1={pad.l} x2={W - pad.r} y1={y(REQUIRED_FLOW_LPM)} y2={y(REQUIRED_FLOW_LPM)} stroke="#d96b84" strokeDasharray="5 4" strokeWidth={1.3} />
+        <text x={W - pad.r} y={y(REQUIRED_FLOW_LPM) - 5} textAnchor="end" fill="#eaaab9" fontSize={10}>
           Required {fmt(REQUIRED_FLOW_LPM)} L/min
         </text>
       </svg>

@@ -16,7 +16,7 @@ export function GalaxyPoints({ tag, template, values, highlight }: { tag: string
         const hot = highlight?.includes(a.name);
         const alarm = typeof v === 'boolean' && v && /Alarm|Trip|Fault|Shutdown|Flood|Intrusion|High_High|Overflow/.test(a.name);
         return (
-          <div key={a.name} className="flex items-center justify-between gap-[10px] border-b border-white/[0.06] py-[5px]" title={a.desc} style={hot ? { background: 'rgba(79,220,255,0.08)' } : undefined}>
+          <div key={a.name} className="flex items-center justify-between gap-[10px] border-b border-white/[0.06] py-[5px]" title={a.desc} style={hot ? { background: 'rgba(157,120,255,0.08)' } : undefined}>
             <span className="min-w-0 truncate font-mono text-[12px] text-ink-2">
               <span className="text-ink-4">{tag}.</span>
               {a.name}

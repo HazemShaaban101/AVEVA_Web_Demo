@@ -90,12 +90,15 @@ export const BREAKER_TEMPLATE: TemplateDef = {
 
 export const TRANSFORMER_TEMPLATE: TemplateDef = {
   name: '$Transformer',
-  desc: 'Cast-resin transformer 22/0.4 kV',
-  io: 'PLC I/O · PT100 winding sensors via temperature relay, fan contacts',
+  desc: 'Oil-immersed (ONAN) transformer 22/0.4 kV',
+  io: 'PLC I/O · PT100 winding and top-oil sensors via temperature relay, oil-level float, fan contacts',
   attrs: [
     { name: 'Load_Pct', type: 'Float', unit: '%', desc: 'Load against rating', decimals: 0 },
     { name: 'Active_Power', type: 'Float', unit: 'kW', desc: 'LV side active power', decimals: 0 },
     { name: 'Winding_Temp', type: 'Float', unit: '°C', desc: 'Hottest winding (PT100)', decimals: 0 },
+    { name: 'Oil_Temp', type: 'Float', unit: '°C', desc: 'Top-oil temperature (PT100)', decimals: 0 },
+    { name: 'Oil_Level_Pct', type: 'Float', unit: '%', desc: 'Conservator oil level', decimals: 0 },
+    { name: 'Oil_Level_Low', type: 'Boolean', desc: 'Low oil level alarm (below 65 %)' },
     { name: 'Fans_Running', type: 'Boolean', desc: 'Cooling fans running' },
     { name: 'Temp_Alarm', type: 'Boolean', desc: 'Winding temperature alarm (130 °C)' },
     { name: 'Temp_Trip', type: 'Boolean', desc: 'Winding temperature trip (150 °C)' },
@@ -286,10 +289,11 @@ export interface Feeder {
 }
 
 export const TRANSFORMERS = [
-  { tag: 'TR_01', label: 'TR-1', kva: 1600, share: 0.27 },
-  { tag: 'TR_02', label: 'TR-2', kva: 1600, share: 0.24 },
-  { tag: 'TR_03', label: 'TR-3', kva: 1600, share: 0.26 },
-  { tag: 'TR_04', label: 'TR-4', kva: 1600, share: 0.23 },
+  { tag: 'TR_01', label: 'TR-1', kva: 1600, share: 0.27, board: 'MDB-A', oil: 84 },
+  { tag: 'TR_02', label: 'TR-2', kva: 1600, share: 0.24, board: 'MDB-A', oil: 81 },
+  // TR-3's conservator is a little low: it shows how a warning reads.
+  { tag: 'TR_03', label: 'TR-3', kva: 1600, share: 0.26, board: 'MDB-B', oil: 62 },
+  { tag: 'TR_04', label: 'TR-4', kva: 1600, share: 0.23, board: 'MDB-B', oil: 79 },
 ];
 
 export const MDB_A_FEEDERS: Feeder[] = [
@@ -359,6 +363,8 @@ export function networkState(mains: MainsState, now: number): Record<string, Dev
     else mdbKw.B += kw;
     out[`CB_Q1${i + 1}`] = breaker(`CB_Q1${i + 1}`, true, utility, kw, 22_000);
     const load = (kw / (t.kva * 0.92)) * 100;
+    const winding = utility ? 48 + load * 0.55 + wander(t.tag + 'wt', now, 0, 1.5, 15) : wander(t.tag + 'wt', now, 36, 0.5, 30);
+    const oilLevel = clamp(t.oil + wander(t.tag + 'ol', now, 0, 0.6, 90), 0, 100);
     out[t.tag] = {
       tag: t.tag,
       template: TRANSFORMER_TEMPLATE,
@@ -366,7 +372,10 @@ export function networkState(mains: MainsState, now: number): Record<string, Dev
       values: {
         Load_Pct: load,
         Active_Power: kw,
-        Winding_Temp: utility ? 48 + load * 0.55 + wander(t.tag + 'wt', now, 0, 1.5, 15) : wander(t.tag + 'wt', now, 36, 0.5, 30),
+        Winding_Temp: winding,
+        Oil_Temp: winding - 14 + wander(t.tag + 'ot', now, 0, 0.6, 20),
+        Oil_Level_Pct: oilLevel,
+        Oil_Level_Low: oilLevel < 65,
         Fans_Running: load > 70,
         Temp_Alarm: false,
         Temp_Trip: false,

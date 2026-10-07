@@ -32,7 +32,7 @@ export default function BuildingScreen() {
         transition={{ duration: leaving ? 0.45 : 1.1, ease: [0.22, 1, 0.36, 1] }}
         style={{ transformOrigin: '75% 70%' }}
       />
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(2,18,18,0.55) 0%, rgba(2,18,18,0) 22%)' }} />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(4,2,5,0.55) 0%, rgba(4,2,5,0) 22%)' }} />
       <svg className="absolute inset-0" width={1816} height={775} viewBox="52 206 1816 775">
         {b.floors.map((f) => {
           const band = A02_FLOOR_BANDS[f.id];
@@ -42,9 +42,9 @@ export default function BuildingScreen() {
             <path
               key={f.id}
               d={band}
-              fill="#4fdcff"
+              fill="#9d78ff"
               fillOpacity={lit ? 0.32 : 0.001}
-              stroke="#4fdcff"
+              stroke="#9d78ff"
               strokeOpacity={lit ? 1 : 0}
               strokeWidth={2}
               strokeLinejoin="round"

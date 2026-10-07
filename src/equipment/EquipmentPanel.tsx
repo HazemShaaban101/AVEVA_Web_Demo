@@ -102,10 +102,10 @@ function ValueBox({ text, tone }: { text: string; tone: 'bad' | 'good' | 'idle' 
     <span
       className="min-w-[110px] rounded-[8px] border px-[8px] py-[2px] text-center text-[13px]"
       style={{
-        borderColor: tone === 'bad' ? '#ef4444' : '#4fc3d4',
-        color: tone === 'bad' ? '#ef4444' : tone === 'good' ? '#2fae4f' : tone === 'idle' ? '#6f929a' : '#0d3438',
+        borderColor: tone === 'bad' ? '#d96b84' : '#b58ce3',
+        color: tone === 'bad' ? '#d96b84' : tone === 'good' ? '#2fae4f' : tone === 'idle' ? '#5f526d' : '#07050a',
         fontWeight: tone === 'bad' ? 600 : 500,
-        background: tone === 'bad' ? '#fff1f1' : '#fff',
+        background: tone === 'bad' ? '#fbeff3' : '#ffffff',
       }}
     >
       {text}
@@ -137,9 +137,9 @@ export function EquipmentPanel({ live, selected }: { live: AhuLive; selected: Ah
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="absolute right-[24px] top-[24px] z-10 flex h-[560px] w-[330px] flex-col overflow-hidden rounded-[8px] bg-white font-[family-name:var(--font-plain)] text-[#0d3438] shadow-[0_18px_50px_rgba(0,0,0,0.5)]"
+      className="absolute right-[24px] top-[24px] z-10 flex h-[560px] w-[330px] flex-col overflow-hidden rounded-[8px] bg-white font-[family-name:var(--font-plain)] text-[#07050a] shadow-[0_18px_50px_rgba(0,0,0,0.5)]"
     >
-      <div className="bg-[#2f8f9e] px-[14px] py-[12px] text-center text-white">
+      <div className="bg-[#482a6a] px-[14px] py-[12px] text-center text-white">
         <p className="text-[20px] font-medium leading-none">{live.unit.id}</p>
         <p className="mt-[5px] text-[11px] tracking-[0.5px] text-white/80">
           {live.status === 'live' ? '● LIVE' : live.status === 'reconnecting' ? '● RECONNECTING' : '● CONNECTING'} · {live.unit.galaxy}
@@ -158,7 +158,7 @@ export function EquipmentPanel({ live, selected }: { live: AhuLive; selected: Ah
                   <div
                     key={role}
                     data-hot={hot}
-                    className={clsx('flex items-center justify-between rounded-[8px] px-[6px] py-[5px] text-[13px] transition-colors', hot && 'bg-[#d9fbff]')}
+                    className={clsx('flex items-center justify-between rounded-[8px] px-[6px] py-[5px] text-[13px] transition-colors', hot && 'bg-[#e4ccff]')}
                     title={`${live.unit.galaxy}.${live.unit.attrs[role]}`}
                   >
                     <span className={hot ? 'font-medium text-[#b36b00]' : ''}>{AHU_ROLE_LABELS[role]}</span>
@@ -173,7 +173,7 @@ export function EquipmentPanel({ live, selected }: { live: AhuLive; selected: Ah
         </AnimatePresence>
       </div>
 
-      <nav className="grid grid-cols-4 border-t border-[#ececf6] text-[11px] text-[#6f929a]">
+      <nav className="grid grid-cols-4 border-t border-[#ececf6] text-[11px] text-[#5f526d]">
         <TabButton on={tab === 'points'} onClick={() => setTab('points')} label="Points" icon={<ListIcon />} />
         <TabButton on={tab === 'schedule'} onClick={() => setTab('schedule')} label="Schedule" icon={<CalIcon />} />
         <TabButton on={tab === 'trends'} onClick={() => setTab('trends')} label="Trends" icon={<PulseIcon />} />
@@ -185,11 +185,11 @@ export function EquipmentPanel({ live, selected }: { live: AhuLive; selected: Ah
 
 function TabButton({ on, onClick, label, icon, badge }: { on: boolean; onClick: () => void; label: string; icon: ReactNode; badge?: number }) {
   return (
-    <button onClick={onClick} className={clsx('relative flex flex-col items-center gap-[3px] py-[8px] transition-colors', on ? 'text-[#2f8f9e]' : 'hover:text-[#2f8f9e]')}>
+    <button onClick={onClick} className={clsx('relative flex flex-col items-center gap-[3px] py-[8px] transition-colors', on ? 'text-[#482a6a]' : 'hover:text-[#482a6a]')}>
       {icon}
       {label}
       {!!badge && <span className="absolute right-[18px] top-[5px] flex h-[14px] min-w-[14px] items-center justify-center rounded-full bg-alarm px-[3px] text-[9px] text-white">{badge}</span>}
-      {on && <motion.span layoutId="eq-tab" className="absolute inset-x-[14px] top-0 h-[2px] rounded-full bg-[#2f8f9e]" />}
+      {on && <motion.span layoutId="eq-tab" className="absolute inset-x-[14px] top-0 h-[2px] rounded-full bg-[#482a6a]" />}
     </button>
   );
 }
@@ -199,14 +199,14 @@ function TabButton({ on, onClick, label, icon, badge }: { on: boolean; onClick: 
 function Trends({ live }: { live: AhuLive }) {
   useNow(5000);
   const roles: { role: AhuRole; unit: string; color: string }[] = [
-    { role: 'supplyTemp', unit: '°C', color: '#22a9c7' },
-    { role: 'outsideTemp', unit: '°C', color: '#2f8f9e' },
+    { role: 'supplyTemp', unit: '°C', color: '#512483' },
+    { role: 'outsideTemp', unit: '°C', color: '#482a6a' },
     { role: 'vsdFb', unit: '%', color: '#2fae4f' },
-    { role: 'pressure', unit: 'Pa', color: '#d64545' },
+    { role: 'pressure', unit: 'Pa', color: '#c25a74' },
   ];
   return (
     <div className="flex flex-col gap-[12px] py-[4px]">
-      <p className="text-[11px] text-[#6f929a]">Simulated history of the last hour.</p>
+      <p className="text-[11px] text-[#5f526d]">Simulated history of the last hour.</p>
       {roles.map(({ role, unit, color }) => {
         const series = live.obj?.history[live.unit.attrs[role]] ?? [];
         return (
@@ -226,7 +226,7 @@ function Trends({ live }: { live: AhuLive }) {
 function Spark({ data, color }: { data: number[]; color: string }) {
   const w = 290;
   const h = 40;
-  if (data.length < 2) return <div className="mt-[4px] flex h-[40px] items-center justify-center rounded-[8px] bg-[#f5f5fb] text-[11px] text-[#8fb4ba]">Collecting…</div>;
+  if (data.length < 2) return <div className="mt-[4px] flex h-[40px] items-center justify-center rounded-[8px] bg-[#f5f5fb] text-[11px] text-[#bbaacb]">Collecting…</div>;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const y = (v: number) => (max === min ? h / 2 : h - 3 - ((v - min) / (max - min)) * (h - 6));
@@ -263,19 +263,19 @@ function Alerts({ live, active }: { live: AhuLive; active: AhuRole[] }) {
         <p className="rounded-[8px] bg-[#effaf3] px-[10px] py-[8px] text-[#2fae4f]">No active alarms on {live.unit.id}.</p>
       ) : (
         active.map((r) => (
-          <p key={r} className="mb-[6px] flex items-center justify-between rounded-[8px] bg-[#fff1f1] px-[10px] py-[7px] text-[#d93636]">
+          <p key={r} className="mb-[6px] flex items-center justify-between rounded-[8px] bg-[#fbeff3] px-[10px] py-[7px] text-[#c25a74]">
             {AHU_ROLE_LABELS[r]} <span className="text-[11px] font-semibold">ACTIVE</span>
           </p>
         ))
       )}
-      <p className="mb-[4px] mt-[14px] text-[11px] font-semibold tracking-[0.5px] text-[#6f929a]">CHANGES THIS SESSION</p>
+      <p className="mb-[4px] mt-[14px] text-[11px] font-semibold tracking-[0.5px] text-[#5f526d]">CHANGES THIS SESSION</p>
       {log.length === 0 ? (
-        <p className="text-[12px] text-[#8fb4ba]">None yet.</p>
+        <p className="text-[12px] text-[#bbaacb]">None yet.</p>
       ) : (
         log.map((e, i) => (
           <p key={i} className="flex justify-between py-[3px] text-[12px]">
             <span>{AHU_ROLE_LABELS[e.role]}</span>
-            <span className={e.on ? 'text-[#d93636]' : 'text-[#2fae4f]'}>
+            <span className={e.on ? 'text-[#c25a74]' : 'text-[#2fae4f]'}>
               {e.on ? 'Raised' : 'Cleared'} · {new Date(e.t).toLocaleTimeString('en-GB')}
             </span>
           </p>
@@ -301,14 +301,14 @@ function Schedule({ running }: { running: boolean }) {
   const today = (new Date().getDay() + 6) % 7;
   return (
     <div className="py-[4px] text-[13px]">
-      <p className="mb-[8px] text-[11px] text-[#6f929a]">Occupancy schedule (platform plan). Actual state: {running ? 'running' : 'stopped'}.</p>
+      <p className="mb-[8px] text-[11px] text-[#5f526d]">Occupancy schedule (platform plan). Actual state: {running ? 'running' : 'stopped'}.</p>
       {WEEK.map((w, i) => (
         <div key={w.day} className={clsx('mb-[4px] flex items-center gap-[10px] rounded-[8px] px-[8px] py-[5px]', i === today && 'bg-[#eef0ff]')}>
-          <span className={clsx('w-[36px]', i === today && 'font-semibold text-[#2f8f9e]')}>{w.day}</span>
+          <span className={clsx('w-[36px]', i === today && 'font-semibold text-[#482a6a]')}>{w.day}</span>
           <div className="relative h-[8px] flex-1 rounded-full bg-[#ececf6]">
-            <span className="absolute inset-y-0 rounded-full bg-[#2f8f9e]" style={{ left: `${(parseInt(w.from) / 24) * 100}%`, right: `${100 - (Math.max(parseInt(w.to) || 24, parseInt(w.from) + 1) / 24) * 100}%` }} />
+            <span className="absolute inset-y-0 rounded-full bg-[#482a6a]" style={{ left: `${(parseInt(w.from) / 24) * 100}%`, right: `${100 - (Math.max(parseInt(w.to) || 24, parseInt(w.from) + 1) / 24) * 100}%` }} />
           </div>
-          <span className="w-[92px] text-right text-[12px] text-[#5f8389]">
+          <span className="w-[92px] text-right text-[12px] text-[#534760]">
             {w.from}–{w.to}
           </span>
         </div>

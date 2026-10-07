@@ -11,6 +11,7 @@ const CampusScreen = lazy(() => import('@/screens/site/CampusScreen'));
 const BuildingScreen = lazy(() => import('@/screens/site/BuildingScreen'));
 const FloorScreen = lazy(() => import('@/screens/site/FloorScreen'));
 const EquipmentScreen = lazy(() => import('@/screens/site/EquipmentScreen'));
+const FireBuildingScreen = lazy(() => import('@/screens/fire/FireBuildingScreen'));
 
 export function App() {
   return (
@@ -24,6 +25,7 @@ export function App() {
               <Route path="site/:building" element={<BuildingScreen />} />
               <Route path="site/:building/:floor" element={<FloorScreen />} />
               <Route path="site/:building/:floor/:device" element={<EquipmentScreen />} />
+              <Route path="fire/system/:building" element={<FireBuildingScreen />} />
               <Route path=":system" element={<SystemIndex />} />
               <Route path=":system/:sub" element={<SubsystemScreen />} />
             </Route>
