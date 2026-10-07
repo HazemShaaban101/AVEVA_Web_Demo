@@ -134,7 +134,7 @@ export function TrendChart({ data, yTitle, xTitle = 'Time (hrs)', unit = '', dec
           {ticks.map((t) => (
             <g key={t}>
               <line x1={PAD_L} x2={PAD_L + plotW + 44} y1={y(t)} y2={y(t)} stroke="rgba(171,140,206,0.11)" />
-              <text x={PAD_L - 12} y={y(t)} fill="#645773" fontSize={12} textAnchor="end" dominantBaseline="middle">
+              <text x={PAD_L - 12} y={y(t)} fill="#ffffff" fontSize={12} textAnchor="end" dominantBaseline="middle">
                 {fmt(t, Number.isInteger(Math.round(t * 1e6) / 1e6) ? 0 : tickDecimals)}
               </text>
             </g>
@@ -181,7 +181,7 @@ export function TrendChart({ data, yTitle, xTitle = 'Time (hrs)', unit = '', dec
 
           {data.map((d, i) =>
             i % every === 0 ? (
-              <text key={d.label + i} x={x(i)} y={PAD_T + plotH + 28} fill="#645773" fontSize={12} textAnchor="middle">
+              <text key={d.label + i} x={x(i)} y={PAD_T + plotH + 28} fill="#ffffff" fontSize={12} textAnchor="middle">
                 {d.label}
               </text>
             ) : null,

@@ -81,7 +81,7 @@ export function PairedBarChart({ data, names, yTitle, xTitle, unit = '', compact
           {Array.from({ length: 5 }, (_, i) => (top * i) / 4).map((t) => (
             <g key={t}>
               <line x1={PAD_L} x2={width - 4} y1={y(t)} y2={y(t)} stroke="rgba(157,120,255,0.1)" />
-              <text x={PAD_L - 10} y={y(t)} fill="#5f526d" fontSize={compact ? 9 : 12} textAnchor="end" dominantBaseline="middle">
+              <text x={PAD_L - 10} y={y(t)} fill="#ffffff" fontSize={compact ? 9 : 12} textAnchor="end" dominantBaseline="middle">
                 {fmt(t)}
               </text>
             </g>
@@ -122,7 +122,7 @@ export function PairedBarChart({ data, names, yTitle, xTitle, unit = '', compact
                   </g>
                 ))}
                 {i % labelEvery === 0 && (
-                  <text x={cx} y={PAD_T + plotH + (compact ? 16 : 22)} fill="#645773" fontSize={compact ? 9 : 12} textAnchor="middle">
+                  <text x={cx} y={PAD_T + plotH + (compact ? 16 : 22)} fill="#ffffff" fontSize={compact ? 9 : 12} textAnchor="middle">
                     {d.label}
                   </text>
                 )}

@@ -110,7 +110,7 @@ export function DialGauge({ value, min = 0, max = 100, unit = '', decimals = 0, 
         const deg = START + (SWEEP * i) / 5;
         const p = polar(cx, cy, 110, deg);
         return (
-          <text key={i} x={p.x} y={p.y} fill="#b09dc1" fontSize={12} textAnchor="middle" dominantBaseline="middle" transform={`rotate(${deg} ${p.x} ${p.y})`}>
+          <text key={i} x={p.x} y={p.y} fill="#ffffff" fontSize={12} textAnchor="middle" dominantBaseline="middle" transform={`rotate(${deg} ${p.x} ${p.y})`}>
             {fmtLabel(v)}
           </text>
         );

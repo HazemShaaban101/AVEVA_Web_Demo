@@ -208,7 +208,7 @@ function FlowTestChart({ hydrants, selected, onSelect }: { hydrants: { h: Hydran
         {[0, 1000, 2000, 3000].map((q) => (
           <g key={q}>
             <line x1={pad.l} x2={W - pad.r} y1={y(q)} y2={y(q)} stroke="rgba(255,255,255,0.07)" />
-            <text x={pad.l - 6} y={y(q) + 3.5} textAnchor="end" fill="#b09dc1" fontSize={10}>
+            <text x={pad.l - 6} y={y(q) + 3.5} textAnchor="end" fill="#ffffff" fontSize={10}>
               {q ? `${q / 1000}k` : '0'}
             </text>
           </g>
@@ -234,7 +234,7 @@ function FlowTestChart({ hydrants, selected, onSelect }: { hydrants: { h: Hydran
                 animate={{ y: y(q), height: y(0) - y(q) }}
                 transition={{ duration: 0.8, delay: 0.3 + i * 0.03 }}
               />
-              <text x={x + w / 2} y={H - pad.b + 14} textAnchor="middle" fill={on ? '#9d78ff' : '#b09dc1'} fontSize={10}>
+              <text x={x + w / 2} y={H - pad.b + 14} textAnchor="middle" fill={on ? '#9d78ff' : '#ffffff'} fontSize={10}>
                 {h.label.slice(2)}
               </text>
             </g>
