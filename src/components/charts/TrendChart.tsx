@@ -94,7 +94,7 @@ export function TrendChart({ data, yTitle, xTitle = 'Time (hrs)', unit = '', dec
   return (
     <div ref={ref} className="relative h-full w-full">
       <span className="absolute left-0 top-[12px] text-[12px] font-bold uppercase tracking-[0.12em] text-ink-3">{yTitle}</span>
-      <div className="absolute right-[4px] top-[10px] flex items-center gap-[22px] text-[13px] text-[#b09dc1]">
+      <div className="absolute right-[4px] top-[10px] flex items-center gap-[22px] text-[13px] text-white">
         {showPredictive && (
           <span className="flex items-center gap-[8px]">
             <span className="h-[8px] w-[8px] rounded-full bg-[#7fcf9d]" />

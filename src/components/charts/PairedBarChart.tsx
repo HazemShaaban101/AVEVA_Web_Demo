@@ -55,7 +55,7 @@ export function PairedBarChart({ data, names, yTitle, xTitle, unit = '', compact
   return (
     <div ref={ref} className="relative h-full w-full">
       {yTitle && <span className="absolute left-0 top-[12px] text-[12px] font-bold uppercase tracking-[0.12em] text-ink-3">{yTitle}</span>}
-      <div className={`absolute right-[4px] flex items-center gap-[26px] text-[#b09dc1] ${compact ? 'top-0 text-[11px]' : 'top-[10px] text-[13px]'}`}>
+      <div className={`absolute right-[4px] flex items-center gap-[26px] text-white ${compact ? 'top-0 text-[11px]' : 'top-[10px] text-[13px]'}`}>
         <span className="flex items-center gap-[7px]">
           <span className="h-[8px] w-[8px] rounded-full" style={{ background: cA, boxShadow: `0 0 8px ${cA}` }} />
           {names.a}

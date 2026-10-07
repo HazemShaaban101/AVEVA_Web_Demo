@@ -177,7 +177,7 @@ export function Legend({ x, y, items }: { x: number; y: number; items: { label: 
         return (
           <g key={it.label} transform={`translate(${at} ${y})`}>
             {it.swatch}
-            <text x={24} y={4} fill="#b09dc1" fontSize={12}>
+            <text x={24} y={4} fill="#ffffff" fontSize={12}>
               {it.label}
             </text>
           </g>
